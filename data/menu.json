@@ -1,0 +1,226 @@
+{
+  "appetizers": {
+    "heroImage": "",
+    "name": "Appetizers",
+    "name_ar": "مقبلات",
+    "items": [
+      {
+        "name": "Hummus Plate",
+        "name_ar": "حمص",
+        "description": "Smooth chickpeas blended with tahini, lemon, garlic and olive oil, lightly spiced.",
+        "description_ar": "حمص بالطحينة والليمون.",
+        "price": 480,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Hummus Beef Plate",
+        "name_ar": "حمص باللحم",
+        "description": "Smooth chickpeas blended with tahini, lemon, garlic and olive oil, lightly spiced with minced meat.",
+        "description_ar": "حمص بالطحينة واللحم المفروم.",
+        "price": 600,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Hummus Chicken Plate",
+        "name_ar": "حمص بالدجاج",
+        "description": "Smooth chickpeas blended with tahini, lemon, garlic, and olive oil lightly spiced with chicken.",
+        "description_ar": "حمص بالطحينة والدجاج.",
+        "price": 560,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Kebbeh",
+        "name_ar": "كبة",
+        "description": "Crispy bulgur shells filled with spiced minced beef and onions, fried to a golden finish.",
+        "description_ar": "كبة مقلية.",
+        "price": 160,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Falafel",
+        "name_ar": "فلافل",
+        "description": "Crispy chickpea patties with herbs and spices, served with fresh veggies and hummus.",
+        "description_ar": "فلافل مع حمص وخضار.",
+        "price": 480,
+        "options": [],
+        "image": ""
+      }
+    ]
+  },
+  "salads": {
+    "heroImage": "",
+    "name": "Salads",
+    "name_ar": "سلطات",
+    "items": [
+      {
+        "name": "Tabbouleh",
+        "name_ar": "تبولة",
+        "description": "Finely chopped parsley, tomatoes, mint, and onion with soaked bulgur, lemon and olive oil.",
+        "description_ar": "سلطة بقدونس وبرغل.",
+        "price": 500,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Shamandar",
+        "name_ar": "سلطة شمندر",
+        "description": "Diced beetroot with garlic, cumin, olive oil and lemon for a naturally sweet, earthy flavour.",
+        "description_ar": "سلطة شمندر بالثوم والكمون.",
+        "price": 500,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Fattoush",
+        "name_ar": "فتوش",
+        "description": "Crisp lettuce, tomatoes, cucumbers, radishes and herbs with toasted pita in tangy lemon dressing.",
+        "description_ar": "سلطة خضار مع خبز محمص.",
+        "price": 500,
+        "options": [],
+        "image": ""
+      }
+    ]
+  },
+  "shawarma_and_wraps": {
+    "heroImage": "",
+    "name": "Shawarma & Wraps",
+    "name_ar": "شاورما ولفائف",
+    "items": [
+      {
+        "name": "Chicken Shawarma",
+        "name_ar": "شاورما دجاج",
+        "description": "Thinly sliced marinated chicken, spiced and grilled, served tender and juicy with a plate of fries",
+        "description_ar": "شاورما دجاج مع بطاطس.",
+        "price": 320,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Beef Shawarma",
+        "name_ar": "شاورما لحم",
+        "description": "Thinly sliced marinated beef, spiced and grilled, served tender and juicy with a plate of fries",
+        "description_ar": "شاورما لحم مع بطاطس.",
+        "price": 360,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Arabic Shawarma Plate",
+        "name_ar": "صحن شاورما عربي",
+        "description": "Shawarma served with chips, salad and sauces",
+        "description_ar": "شاورما مع بطاطس وسلطة.",
+        "price": 720,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Chicken Laffloufah",
+        "name_ar": "لفافة دجاج",
+        "description": "All the classic shawarma flavour in a soft mini roll—juicy meat, fresh crunch and creamy garlic sauce.",
+        "description_ar": "لفافة شاورما دجاج صغيرة.",
+        "price": 200,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Beef Laffloufah",
+        "name_ar": "لفافة لحم",
+        "description": "All the classic shawarma flavour in a soft mini roll—juicy meat, fresh crunch and creamy garlic sauce.",
+        "description_ar": "لفافة شاورما لحم صغيرة.",
+        "price": 240,
+        "options": [],
+        "image": ""
+      }
+    ]
+  },
+  "main_courses": {
+    "heroImage": "",
+    "name": "Main Courses",
+    "name_ar": "أطباق رئيسية",
+    "items": [
+      {
+        "name": "Full Chicken",
+        "name_ar": "دجاج كامل",
+        "description": "Full rotisserie chicken served with rice, chips, coleslaw, sauces, pickles and 2 pieces of Arabic bread",
+        "description_ar": "دجاج مشوي كامل مع أرز ومرافقات.",
+        "price": 2000,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "2 Piece Chicken & Chips",
+        "name_ar": "دجاج (قطعتان) مع بطاطس",
+        "description": "2 Piecer served with coleslaw, pickles, Arabic bread and sauces",
+        "description_ar": "قطعتا دجاج مع مرافقات.",
+        "price": 400,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "4 Piece Chicken & Chips",
+        "name_ar": "دجاج (٤ قطع) مع بطاطس",
+        "description": "4 Piecer served with coleslaw, pickles, Arabic bread and sauces",
+        "description_ar": "٤ قطع دجاج مع مرافقات.",
+        "price": 800,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "8 Piece Chicken & Chips",
+        "name_ar": "دجاج (٨ قطع) مع بطاطس",
+        "description": "8 Piecer served with coleslaw, pickles, Arabic bread and sauces",
+        "description_ar": "٨ قطع دجاج مع مرافقات.",
+        "price": 1600,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Chicken Mandi",
+        "name_ar": "مندي دجاج",
+        "description": "Tender, slow-cooked chicken served over fragrant basmati rice with traditional Mandi spices.",
+        "description_ar": "دجاج مندي مع أرز بسمتي.",
+        "price": 1100,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Lamb Mandi",
+        "name_ar": "مندي لحم",
+        "description": "Tender, slow-cooked lamb served over fragrant basmati rice with traditional Mandi spices.",
+        "description_ar": "لحم مندي مع أرز بسمتي.",
+        "price": 1300,
+        "options": [],
+        "image": ""
+      }
+    ]
+  },
+  "drinks": {
+    "heroImage": "",
+    "name": "Drinks",
+    "name_ar": "مشروبات",
+    "items": [
+      {
+        "name": "Soda 300 ml",
+        "name_ar": "مشروب غازي",
+        "description": "",
+        "description_ar": "",
+        "price": 200,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Water 500 ml",
+        "name_ar": "ماء",
+        "description": "",
+        "description_ar": "",
+        "price": 150,
+        "options": [],
+        "image": ""
+      }
+    ]
+  }
+}
