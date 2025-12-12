@@ -95,8 +95,8 @@ const BRAND_CONFIG = {
       ar: "جميع الحقوق محفوظة."
     },
     developedBy: {
-      en: "Crafted with excellence",
-      ar: "مطور بإتقان"
+      en: "Developed by Esto Solutions",
+      ar: "مطور بواسطة إستو للحلول"
     },
     showBrandName: true
   },
@@ -556,8 +556,8 @@ export default function MenuPage() {
                 style={{
                   ...customSelectStyles,
                   textAlign: language === 'ar' ? 'right' : 'left',
-                  paddingRight: language === 'ar' ? '2.5rem' : '1rem',
-                  paddingLeft: language === 'ar' ? '1rem' : '2.5rem',
+                  // paddingRight: language === 'ar' ? '2.5rem' : '1rem',
+                  // paddingLeft: language === 'ar' ? '1rem' : '2.5rem',
                 }}
               >
                 <option value="default">{language === 'en' ? 'Sort by Price' : 'ترتيب حسب السعر'}</option>
@@ -1692,6 +1692,7 @@ const searchContainerStyles = {
   display: 'flex',
   gap: '1rem',
   padding: '1.5rem',
+  paddingBottom: '0rem',
   alignItems: 'center',
   flexWrap: 'wrap',
   backgroundColor: BRAND_CONFIG.colors.white,
@@ -1737,7 +1738,8 @@ const customDropdownStyles = {
 
 const customSelectStyles = {
   width: '100%',
-  padding: '0.875rem 2.5rem 0.875rem 1rem',
+  padding: '1rem',
+  display: 'flex',
   border: `1px solid ${BRAND_CONFIG.colors.gray[300]}`,
   borderRadius: '12px',
   fontSize: '0.9rem',
