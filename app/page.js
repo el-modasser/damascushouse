@@ -204,7 +204,7 @@ export default function MenuPage() {
   } = BRAND_CONFIG;
 
   // State management
-  const [selectedCategory, setSelectedCategory] = useState(Object.keys(menuData)[0] || 'trays');
+  const [activeCategory, setActiveCategory] = useState(Object.keys(menuData)[0] || 'trays');
   const [isItemModalOpen, setIsItemModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [selectedItemOption, setSelectedItemOption] = useState(null);
@@ -214,10 +214,7 @@ export default function MenuPage() {
   const [cart, setCart] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [orderNotes, setOrderNotes] = useState('');
-  const [visibleItems, setVisibleItems] = useState(1000);
-  const [imageLoadStates, setImageLoadStates] = useState({});
   const [language, setLanguage] = useState(defaultLanguage);
-  const [heroImagesLoaded, setHeroImagesLoaded] = useState({});
   const [itemOptions, setItemOptions] = useState({});
 
   // NEW: Check if order mode is enabled via query parameter
@@ -226,11 +223,13 @@ export default function MenuPage() {
   // Refs
   const categoriesRef = useRef(null);
   const categoryScrollRef = useRef(null);
-  const animationFrameRef = useRef(null);
-  const dragStartXRef = useRef(0);
-  const dragStartScrollLeftRef = useRef(0);
-  const isDraggingRef = useRef(false);
-  const lastTouchTimeRef = useRef(0);
+  const categorySectionsRef = useRef({});
+  const observerRef = useRef(null);
+  const isScrollingRef = useRef(false);
+  const scrollTimeoutRef = useRef(null);
+
+  // Get category order
+  const categoryOrder = Object.keys(menuData);
 
   // Check for order mode on mount
   useEffect(() => {
@@ -270,7 +269,7 @@ export default function MenuPage() {
           setIsSticky(rect.top <= 0);
         }
       };
-      window.addEventListener('scroll', handleScroll);
+      window.addEventListener('scroll', handleScroll, { passive: true });
       return () => window.removeEventListener('scroll', handleScroll);
     }
   }, [layout.stickyCategories]);
@@ -295,76 +294,106 @@ export default function MenuPage() {
     };
   }, [isItemModalOpen, isCartOpen]);
 
-  // Improved drag scroll functionality
-  const handleDragStart = (e) => {
-    if (!features.enableDragScroll || !categoryScrollRef.current) return;
-
-    const now = Date.now();
-    if (now - lastTouchTimeRef.current < 100) return;
-    lastTouchTimeRef.current = now;
-
-    isDraggingRef.current = true;
-
-    const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
-
-    dragStartXRef.current = clientX;
-    dragStartScrollLeftRef.current = categoryScrollRef.current.scrollLeft;
-
-    if (!e.type.includes('touch')) {
-      categoryScrollRef.current.style.cursor = 'grabbing';
-      categoryScrollRef.current.style.userSelect = 'none';
+  // NEW: Intersection Observer to detect which category is currently in view
+  useEffect(() => {
+    // Clean up previous observer
+    if (observerRef.current) {
+      observerRef.current.disconnect();
     }
 
-    const moveEvent = e.type.includes('touch') ? 'touchmove' : 'mousemove';
-    const endEvent = e.type.includes('touch') ? 'touchend' : 'mouseup';
+    // Create new observer
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        // Find the most visible category
+        let mostVisibleEntry = null;
+        let highestIntersection = 0;
 
-    document.addEventListener(moveEvent, handleDragMove, { passive: false });
-    document.addEventListener(endEvent, handleDragEnd);
+        entries.forEach(entry => {
+          if (entry.intersectionRatio > highestIntersection) {
+            highestIntersection = entry.intersectionRatio;
+            mostVisibleEntry = entry;
+          }
+        });
 
-    if (e.type.includes('touch')) {
-      e.preventDefault();
-    }
-  };
+        // Update active category if we found one with significant visibility
+        if (mostVisibleEntry && highestIntersection > 0.3 && !isScrollingRef.current) {
+          const categoryId = mostVisibleEntry.target.dataset.categoryId;
+          if (categoryId && categoryId !== activeCategory) {
+            setActiveCategory(categoryId);
+          }
+        }
+      },
+      {
+        threshold: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
+        rootMargin: '-100px 0px -100px 0px' // Buffer to trigger before category fully enters view
+      }
+    );
 
-  const handleDragMove = (e) => {
-    if (!isDraggingRef.current || !categoryScrollRef.current) return;
-
-    if (animationFrameRef.current) {
-      cancelAnimationFrame(animationFrameRef.current);
-    }
-
-    animationFrameRef.current = requestAnimationFrame(() => {
-      const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
-      const walk = (clientX - dragStartXRef.current) * 1.5;
-
-      if (categoryScrollRef.current) {
-        categoryScrollRef.current.scrollLeft = dragStartScrollLeftRef.current - walk;
+    // Observe all category sections
+    Object.values(categorySectionsRef.current).forEach(section => {
+      if (section) {
+        observerRef.current.observe(section);
       }
     });
-  };
 
-  const handleDragEnd = () => {
-    isDraggingRef.current = false;
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+    };
+  }, [activeCategory]);
 
-    if (categoryScrollRef.current) {
-      categoryScrollRef.current.style.cursor = 'grab';
-      categoryScrollRef.current.style.userSelect = 'auto';
+  // NEW: Scroll active category into view (horizontal)
+  useEffect(() => {
+    if (!categoryScrollRef.current) return;
+
+    const activeButton = categoryScrollRef.current.querySelector(`[data-category-id="${activeCategory}"]`);
+    if (!activeButton) return;
+
+    const container = categoryScrollRef.current;
+    const buttonRect = activeButton.getBoundingClientRect();
+    const containerRect = container.getBoundingClientRect();
+
+    // Check if button is not fully visible
+    if (buttonRect.left < containerRect.left || buttonRect.right > containerRect.right) {
+      const scrollLeft = activeButton.offsetLeft - (container.offsetWidth / 2) + (activeButton.offsetWidth / 2);
+
+      // Use smooth scroll for better UX
+      container.scrollTo({
+        left: scrollLeft,
+        behavior: 'smooth'
+      });
     }
+  }, [activeCategory]);
 
-    document.removeEventListener('mousemove', handleDragMove);
-    document.removeEventListener('mouseup', handleDragEnd);
-    document.removeEventListener('touchmove', handleDragMove);
-    document.removeEventListener('touchend', handleDragEnd);
+  // NEW: Smooth scroll to category when clicking on tab
+  const scrollToCategory = useCallback((categoryId) => {
+    const section = categorySectionsRef.current[categoryId];
+    if (!section) return;
 
-    if (animationFrameRef.current) {
-      cancelAnimationFrame(animationFrameRef.current);
-      animationFrameRef.current = null;
-    }
-  };
+    isScrollingRef.current = true;
+    setActiveCategory(categoryId);
 
-  // Filter and sort items
-  const getFilteredAndSortedItems = useCallback(() => {
-    const categoryData = menuData[selectedCategory];
+    // Calculate position with offset for sticky header
+    const headerOffset = categoriesRef.current ? categoriesRef.current.offsetHeight + 20 : 80;
+    const elementPosition = section.offsetTop;
+    const offsetPosition = elementPosition - headerOffset;
+
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: 'smooth'
+    });
+
+    // Reset scrolling flag
+    clearTimeout(scrollTimeoutRef.current);
+    scrollTimeoutRef.current = setTimeout(() => {
+      isScrollingRef.current = false;
+    }, 500);
+  }, []);
+
+  // Filter and sort items for a specific category
+  const getFilteredAndSortedItems = useCallback((categoryId) => {
+    const categoryData = menuData[categoryId];
     if (!categoryData || !categoryData.items) return [];
 
     let items = [...categoryData.items];
@@ -396,10 +425,7 @@ export default function MenuPage() {
     }
 
     return items;
-  }, [selectedCategory, searchQuery, priceSort, features]);
-
-  const filteredItems = getFilteredAndSortedItems();
-  const displayedItems = filteredItems.slice(0, visibleItems);
+  }, [searchQuery, priceSort, features]);
 
   // Handle item option selection
   const handleOptionSelect = (itemName, option) => {
@@ -484,15 +510,12 @@ export default function MenuPage() {
 
   // Animation variants
   const cardVariants = animations.enableAnimations ? {
-    hidden: { y: 20, opacity: 0, scale: 0.9 },
+    hidden: { y: 20, opacity: 0 },
     visible: {
       y: 0,
       opacity: 1,
-      scale: 1,
       transition: {
-        type: "spring",
-        stiffness: 300,
-        damping: 24
+        duration: animations.animationSpeed
       }
     }
   } : {};
@@ -556,8 +579,6 @@ export default function MenuPage() {
                 style={{
                   ...customSelectStyles,
                   textAlign: language === 'ar' ? 'right' : 'left',
-                  // paddingRight: language === 'ar' ? '2.5rem' : '1rem',
-                  // paddingLeft: language === 'ar' ? '1rem' : '2.5rem',
                 }}
               >
                 <option value="default">{language === 'en' ? 'Sort by Price' : 'ترتيب حسب السعر'}</option>
@@ -574,16 +595,7 @@ export default function MenuPage() {
         </div>
       )}
 
-      {/* View-only mode indicator */}
-      {/* {!isOrderMode && (
-        <div style={viewOnlyIndicatorStyles}>
-          <span style={{ fontWeight: '600' }}>
-            {language === 'en' ? 'View Mode - To order, use ?order=true in URL' : 'وضع العرض - للطلب، استخدم ?order=true في الرابط'}
-          </span>
-        </div>
-      )} */}
-
-      {/* Sticky Categories Navigation with Drag Scroll */}
+      {/* Sticky Categories Navigation */}
       <div
         ref={categoriesRef}
         className={`sticky-categories ${isSticky ? 'sticky' : ''}`}
@@ -592,25 +604,17 @@ export default function MenuPage() {
         <div
           ref={categoryScrollRef}
           className="category-scroll-container"
-          style={{
-            ...categoryListStyles,
-            cursor: features.enableDragScroll ? 'grab' : 'pointer',
-            ...(isDraggingRef.current && features.enableDragScroll ? {
-              cursor: 'grabbing',
-              userSelect: 'none'
-            } : {})
-          }}
-          onMouseDown={features.enableDragScroll ? handleDragStart : undefined}
-          onTouchStart={features.enableDragScroll ? handleDragStart : undefined}
+          style={categoryListStyles}
         >
           {Object.keys(menuData).map((categoryId) => (
             <button
               key={categoryId}
+              data-category-id={categoryId}
               style={{
                 ...categoryButtonStyles,
-                ...(selectedCategory === categoryId ? selectedCategoryStyle : {})
+                ...(activeCategory === categoryId ? selectedCategoryStyle : {})
               }}
-              onClick={() => setSelectedCategory(categoryId)}
+              onClick={() => scrollToCategory(categoryId)}
               className="category-btn"
             >
               <span style={{
@@ -624,168 +628,212 @@ export default function MenuPage() {
         </div>
       </div>
 
-      {/* Main Content */}
+      {/* Main Content - Infinite Scroll All Categories */}
       <div style={contentStyles}>
-        {/* Menu Items Grid */}
-        <motion.div
-          style={{
-            ...gridStyles,
-            gridTemplateColumns: gridColumns
-          }}
-          key={selectedCategory + searchQuery + priceSort}
-          initial={animations.enableAnimations ? { opacity: 0 } : {}}
-          animate={animations.enableAnimations ? { opacity: 1 } : {}}
-          transition={animations.enableAnimations ? { duration: animations.animationSpeed } : {}}
-        >
-          {displayedItems.map((item, index) => {
-            if (!item) return null;
+        {Object.keys(menuData).map((categoryId) => {
+          const filteredItems = getFilteredAndSortedItems(categoryId);
 
-            const selectedOption = getSelectedOption(item.name);
-            const itemPrice = getItemPrice(item, selectedOption);
-            const cartItemId = getCartItemId(item, selectedOption);
-            const cartQuantity = cart.find(ci => ci.id === cartItemId)?.quantity || 0;
+          // Don't render empty categories when searching
+          if (features.enableSearch && searchQuery && filteredItems.length === 0) {
+            return null;
+          }
 
-            return (
-              <motion.div
-                key={item.name || index}
-                style={gridItemStyles}
-                className="menu-item-card"
-                variants={cardVariants}
-                initial={animations.enableAnimations ? "hidden" : {}}
-                animate={animations.enableAnimations ? "visible" : {}}
-                transition={animations.enableAnimations ? { delay: index * animations.staggerDelay } : {}}
-                whileHover={animations.enableAnimations ? {
-                  y: -8,
-                  transition: { duration: 0.2 }
-                } : {}}
-                onClick={() => handleItemClick(item)}
+          return (
+            <section
+              key={categoryId}
+              ref={(el) => categorySectionsRef.current[categoryId] = el}
+              data-category-id={categoryId}
+              style={categorySectionStyles}
+            >
+              {/* Category Header */}
+              <motion.h2
+                style={{
+                  ...categoryTitleStyles,
+                  textAlign: "center"
+                }}
+                initial={animations.enableAnimations ? { opacity: 0, y: -20 } : {}}
+                animate={animations.enableAnimations ? { opacity: 1, y: 0 } : {}}
+                transition={animations.enableAnimations ? { duration: animations.animationSpeed } : {}}
               >
-                {/* Image */}
-                {layout.showItemImages && item.image && (
-                  <div style={imageContainerStyles}>
-                    <img
-                      src={`${images.itemPath}${selectedCategory}/${item.image}`}
-                      alt={getText(item, 'name', language)}
-                      style={imageStyles}
-                      onError={(e) => {
-                        e.target.style.display = 'none';
-                      }}
-                    />
-                  </div>
-                )}
+                {getText(menuData[categoryId], 'name', language)}
+              </motion.h2>
 
-                <div style={contentContainerStyles}>
-                  <div style={titleContainerStyles}>
-                    <h3 style={{
-                      ...itemNameStyles,
-                      textAlign: language === 'ar' ? 'right' : 'left'
-                    }}>
-                      {getText(item, 'name', language)}
-                      {selectedOption && (
-                        <span style={optionBadgeStyles}>
-                          {selectedOption.name}
-                        </span>
-                      )}
-                    </h3>
-                  </div>
+              {/* Menu Items Grid */}
+              {filteredItems.length > 0 ? (
+                <motion.div
+                  style={{
+                    ...gridStyles,
+                    gridTemplateColumns: gridColumns
+                  }}
+                  initial={animations.enableAnimations ? { opacity: 0 } : {}}
+                  animate={animations.enableAnimations ? { opacity: 1 } : {}}
+                  transition={animations.enableAnimations ? { duration: animations.animationSpeed * 2 } : {}}
+                >
+                  {filteredItems.map((item, index) => {
+                    if (!item) return null;
 
-                  {layout.showItemDescription && (
-                    <p style={{
-                      ...itemDescriptionStyles,
-                      textAlign: language === 'ar' ? 'right' : 'left'
-                    }}>
-                      {getText(item, 'description', language)}
-                    </p>
-                  )}
+                    const selectedOption = getSelectedOption(item.name);
+                    const itemPrice = getItemPrice(item, selectedOption);
+                    const cartItemId = getCartItemId(item, selectedOption);
+                    const cartQuantity = cart.find(ci => ci.id === cartItemId)?.quantity || 0;
 
-                  {/* Product Options - Only in order mode */}
-                  {isOrderMode && features.enableProductOptions && item.options && item.options.length > 0 && (
-                    <div style={optionsContainerStyles}>
-                      <div style={{
-                        ...optionsLabelStyles,
-                        textAlign: language === 'ar' ? 'right' : 'left'
-                      }}>
-                        {language === 'en' ? 'Select option:' : 'اختر الخيار:'}
-                      </div>
-                      <div style={optionsListStyles}>
-                        {item.options.map((option) => (
-                          <button
-                            key={option.name}
-                            style={{
-                              ...optionButtonStyles,
-                              ...(selectedOption?.name === option.name ? selectedOptionStyle : {})
-                            }}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleOptionSelect(item.name, option);
-                            }}
-                          >
-                            <span style={{
-                              textAlign: language === 'ar' ? 'right' : 'left',
-                              flex: 1
+                    return (
+                      <motion.div
+                        key={item.name || index}
+                        style={gridItemStyles}
+                        className="menu-item-card"
+                        variants={cardVariants}
+                        initial={animations.enableAnimations ? "hidden" : {}}
+                        animate={animations.enableAnimations ? "visible" : {}}
+                        transition={animations.enableAnimations ? { delay: index * animations.staggerDelay } : {}}
+                        whileHover={animations.enableAnimations ? {
+                          y: -8,
+                          transition: { duration: 0.2 }
+                        } : {}}
+                        onClick={() => handleItemClick(item)}
+                      >
+                        {/* Image */}
+                        {layout.showItemImages && item.image && (
+                          <div style={imageContainerStyles}>
+                            <img
+                              src={`${images.itemPath}${categoryId}/${item.image}`}
+                              alt={getText(item, 'name', language)}
+                              style={imageStyles}
+                              onError={(e) => {
+                                e.target.style.display = 'none';
+                              }}
+                            />
+                          </div>
+                        )}
+
+                        <div style={contentContainerStyles}>
+                          <div style={titleContainerStyles}>
+                            <h3 style={{
+                              ...itemNameStyles,
+                              textAlign: language === 'ar' ? 'right' : 'left'
                             }}>
-                              {getText(option, 'name', language)}
-                            </span>
-                            <span style={optionPriceStyles}>
-                              +{currency.symbolEn} {option.price.toLocaleString(currency.format)}
-                            </span>
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  )}
+                              {getText(item, 'name', language)}
+                              {selectedOption && (
+                                <span style={optionBadgeStyles}>
+                                  {selectedOption.name}
+                                </span>
+                              )}
+                            </h3>
+                          </div>
 
-                  <div style={priceCartContainerStyles}>
-                    <p style={{
-                      ...priceStyles,
-                      textAlign: language === 'ar' ? 'right' : 'left'
-                    }}>
-                      {formatPrice(itemPrice, language)}
+                          {layout.showItemDescription && (
+                            <p style={{
+                              ...itemDescriptionStyles,
+                              textAlign: language === 'ar' ? 'right' : 'left'
+                            }}>
+                              {getText(item, 'description', language)}
+                            </p>
+                          )}
+
+                          {/* Product Options - Only in order mode */}
+                          {isOrderMode && features.enableProductOptions && item.options && item.options.length > 0 && (
+                            <div style={optionsContainerStyles}>
+                              <div style={{
+                                ...optionsLabelStyles,
+                                textAlign: language === 'ar' ? 'right' : 'left'
+                              }}>
+                                {language === 'en' ? 'Select option:' : 'اختر الخيار:'}
+                              </div>
+                              <div style={optionsListStyles}>
+                                {item.options.map((option) => (
+                                  <button
+                                    key={option.name}
+                                    style={{
+                                      ...optionButtonStyles,
+                                      ...(selectedOption?.name === option.name ? selectedOptionStyle : {})
+                                    }}
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      handleOptionSelect(item.name, option);
+                                    }}
+                                  >
+                                    <span style={{
+                                      textAlign: language === 'ar' ? 'right' : 'left',
+                                      flex: 1
+                                    }}>
+                                      {getText(option, 'name', language)}
+                                    </span>
+                                    <span style={optionPriceStyles}>
+                                      +{currency.symbolEn} {option.price.toLocaleString(currency.format)}
+                                    </span>
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+
+                          <div style={priceCartContainerStyles}>
+                            <p style={{
+                              ...priceStyles,
+                              textAlign: language === 'ar' ? 'right' : 'left'
+                            }}>
+                              {formatPrice(itemPrice, language)}
+                            </p>
+
+                            {/* Quantity Selector - Only in order mode */}
+                            {isOrderMode && layout.showQuantitySelector && features.enableCart && (
+                              <div style={quantitySelectorStyles}>
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    if (cartQuantity > 0) {
+                                      updateQuantity(cartItemId, cartQuantity - 1);
+                                    }
+                                  }}
+                                  style={quantityButtonStyles}
+                                >
+                                  -
+                                </button>
+                                <span style={quantityDisplayStyles}>
+                                  {cartQuantity}
+                                </span>
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    addToCart(item, 1, selectedOption);
+                                  }}
+                                  style={quantityButtonStyles}
+                                >
+                                  +
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </motion.div>
+                    );
+                  })}
+                </motion.div>
+              ) : (
+                /* No results message for this category (only shown when searching) */
+                features.enableSearch && searchQuery && (
+                  <div style={categoryNoResultsStyles}>
+                    <p style={{ textAlign: language === 'ar' ? 'right' : 'center' }}>
+                      {language === 'en' ? 'No dishes found in this category.' : 'لم يتم العثور على أطباق في هذه الفئة.'}
                     </p>
-
-                    {/* Quantity Selector - Only in order mode */}
-                    {isOrderMode && layout.showQuantitySelector && features.enableCart && (
-                      <div style={quantitySelectorStyles}>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            if (cartQuantity > 0) {
-                              updateQuantity(cartItemId, cartQuantity - 1);
-                            }
-                          }}
-                          style={quantityButtonStyles}
-                        >
-                          -
-                        </button>
-                        <span style={quantityDisplayStyles}>
-                          {cartQuantity}
-                        </span>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            addToCart(item, 1, selectedOption);
-                          }}
-                          style={quantityButtonStyles}
-                        >
-                          +
-                        </button>
-                      </div>
-                    )}
                   </div>
-                </div>
-              </motion.div>
-            );
-          })}
-        </motion.div>
+                )
+              )}
+            </section>
+          );
+        })}
 
-        {/* No results message */}
-        {displayedItems.length === 0 && (
-          <div style={noResultsStyles}>
-            <p style={{ textAlign: language === 'ar' ? 'right' : 'center' }}>
-              {language === 'en' ? 'No dishes found matching your search.' : 'لم يتم العثور على أطباق تطابق بحثك.'}
-            </p>
-          </div>
-        )}
+        {/* Global no results message */}
+        {features.enableSearch && searchQuery && Object.keys(menuData).every(categoryId => {
+          const filteredItems = getFilteredAndSortedItems(categoryId);
+          return filteredItems.length === 0;
+        }) && (
+            <div style={globalNoResultsStyles}>
+              <p style={{ textAlign: language === 'ar' ? 'right' : 'center' }}>
+                {language === 'en' ? 'No dishes found matching your search in any category.' : 'لم يتم العثور على أطباق تطابق بحثك في أي فئة.'}
+              </p>
+            </div>
+          )}
       </div>
 
       {/* Proceed to Order Button - Only in order mode */}
@@ -997,9 +1045,6 @@ export default function MenuPage() {
                         whileHover={animations.enableAnimations ? { scale: 1.02 } : {}}
                         whileTap={animations.enableAnimations ? { scale: 0.98 } : {}}
                       >
-                        {/* <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style={{ marginRight: '0.5rem' }}>
-                          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893c0-3.18-1.24-6.169-3.495-8.418" />
-                        </svg> */}
                         {language === 'en' ? 'Order via WhatsApp' : 'طلب عبر واتساب'}
                       </motion.button>
                     )}
@@ -1070,7 +1115,7 @@ export default function MenuPage() {
                     transition={animations.enableAnimations ? { delay: animations.staggerDelay * 2, duration: animations.animationSpeed } : {}}
                   >
                     <img
-                      src={`${images.itemPath}${selectedCategory}/${selectedItem.image}`}
+                      src={`${images.itemPath}${selectedItem.category || 'trays'}/${selectedItem.image}`}
                       alt={getText(selectedItem, 'name', language)}
                       style={itemModalImageStyles}
                       onError={(e) => {
@@ -1293,14 +1338,6 @@ export default function MenuPage() {
           textAlign: left;
         }
         
-        /* Disable text selection during drag */
-        .no-select {
-          -webkit-user-select: none;
-          -moz-user-select: none;
-          -ms-user-select: none;
-          user-select: none;
-        }
-        
         /* Smooth transitions */
         .sticky-categories {
           transition: all 0.3s ease;
@@ -1316,17 +1353,41 @@ export default function MenuPage() {
 
 // ==================== NEW STYLES ====================
 
-// View-only indicator
-const viewOnlyIndicatorStyles = {
-  backgroundColor: BRAND_CONFIG.colors.gray[100],
-  border: `1px solid ${BRAND_CONFIG.colors.gray[300]}`,
-  borderRadius: '8px',
-  padding: '0.75rem 1.5rem',
-  margin: '0 1.5rem 1rem 1.5rem',
-  textAlign: 'center',
-  fontSize: '0.9rem',
-  color: BRAND_CONFIG.colors.gray[600]
+// Category Section Styles
+const categorySectionStyles = {
+  marginBottom: '4rem',
+  scrollMarginTop: '120px' // For anchor linking with sticky header
 };
+
+const categoryTitleStyles = {
+  display: 'none',
+  fontSize: '1.8rem',
+  fontWeight: 'bold',
+  color: BRAND_CONFIG.colors.black,
+  margin: '0 0 1rem 0',
+  padding: '0 0.5rem',
+  backgroundColor: BRAND_CONFIG.colors.primary
+};
+
+const categoryNoResultsStyles = {
+  textAlign: 'center',
+  padding: '3rem 2rem',
+  color: BRAND_CONFIG.colors.gray[500],
+  fontSize: '1rem',
+  fontStyle: 'italic'
+};
+
+const globalNoResultsStyles = {
+  textAlign: 'center',
+  padding: '6rem 2rem',
+  color: BRAND_CONFIG.colors.gray[500],
+  fontSize: '1.1rem',
+  backgroundColor: BRAND_CONFIG.colors.gray[50],
+  borderRadius: '12px',
+  margin: '2rem 0'
+};
+
+// ==================== EXISTING STYLES ====================
 
 // Option Badge
 const optionBadgeStyles = {
@@ -1456,8 +1517,6 @@ const modalOptionPriceStyles = {
   fontWeight: '600',
   color: BRAND_CONFIG.colors.secondary
 };
-
-// ==================== EXISTING STYLES ====================
 
 // Modal Styles
 const modalOverlayStyles = {
@@ -1594,65 +1653,6 @@ const modalCloseButtonStyles = {
   marginTop: '1rem'
 };
 
-// Hero Image Styles
-const heroContainerStyles = {
-  position: 'relative',
-  width: '100%',
-  height: '300px',
-  overflow: 'hidden',
-  marginBottom: '2rem'
-};
-
-const heroImageWrapperStyles = {
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  right: 0,
-  bottom: 0,
-  backgroundColor: BRAND_CONFIG.colors.gray[100]
-};
-
-const heroImageStyles = {
-  width: '100%',
-  height: '100%',
-  objectFit: 'cover'
-};
-
-const heroOverlayStyles = {
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  right: 0,
-  bottom: 0,
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  background: `linear-gradient(135deg, rgba(78, 165, 149, 0.3) 0%, rgba(235, 75, 54, 0.2) 100%)`
-};
-
-const heroContentStyles = {
-  textAlign: 'center',
-  color: 'white',
-  maxWidth: '600px',
-  padding: '0 2rem'
-};
-
-const heroTitleStyles = {
-  fontSize: '2.5rem',
-  fontWeight: 'bold',
-  margin: '0 0 1rem 0',
-  textShadow: '0 2px 10px rgba(0,0,0,0.3)',
-  lineHeight: '1.1'
-};
-
-const heroDescriptionStyles = {
-  fontSize: '1.1rem',
-  margin: 0,
-  opacity: 0.9,
-  textShadow: '0 1px 5px rgba(0,0,0,0.3)',
-  lineHeight: '1.4'
-};
-
 // Component Styles
 const languageSwitcherStyles = {
   position: 'absolute',
@@ -1781,7 +1781,8 @@ const categoryListStyles = {
   flex: 1,
   userSelect: 'none',
   WebkitUserSelect: 'none',
-  padding: '0.5rem 0'
+  padding: '0.5rem 0',
+  scrollBehavior: 'smooth'
 };
 
 const categoryButtonStyles = {
@@ -1807,15 +1808,14 @@ const selectedCategoryStyle = {
 };
 
 const contentStyles = {
-  padding: '0 1.5rem 2rem 1.5rem',
-  backgroundColor: BRAND_CONFIG.colors.white,
-  minHeight: '60vh'
+  padding: '0 1.5rem 4rem 1.5rem',
+  backgroundColor: BRAND_CONFIG.colors.white
 };
 
 const gridStyles = {
   display: 'grid',
   gap: '2rem',
-  padding: '1rem 0'
+  padding: '0 1rem 2rem 1rem'
 };
 
 const gridItemStyles = {
@@ -1841,13 +1841,6 @@ const imageContainerStyles = {
   justifyContent: 'center',
   backgroundColor: BRAND_CONFIG.colors.gray[100],
   position: 'relative'
-};
-
-const skeletonStyles = {
-  width: '100%',
-  height: '100%',
-  backgroundColor: BRAND_CONFIG.colors.gray[200],
-  borderRadius: '12px'
 };
 
 const imageStyles = {
@@ -1933,13 +1926,6 @@ const quantityDisplayStyles = {
   fontSize: '0.9rem',
   fontWeight: '600',
   color: BRAND_CONFIG.colors.gray[800]
-};
-
-const noResultsStyles = {
-  textAlign: 'center',
-  padding: '4rem 2rem',
-  color: BRAND_CONFIG.colors.gray[500],
-  fontSize: '1.1rem'
 };
 
 const cartHeaderStyles = {

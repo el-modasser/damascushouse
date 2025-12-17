@@ -9,43 +9,140 @@
         "name_ar": "حمص",
         "description": "Smooth chickpeas blended with tahini, lemon, garlic and olive oil, lightly spiced.",
         "description_ar": "حمص بالطحينة والليمون.",
-        "price": 480,
+        "price": 600,
         "options": [],
         "image": ""
       },
       {
         "name": "Hummus Beef Plate",
         "name_ar": "حمص باللحم",
-        "description": "Smooth chickpeas blended with tahini, lemon, garlic and olive oil, lightly spiced with minced meat.",
+        "description": "Smooth chickpeas blended with tahini, lemon, garlic and olive oil, lightly spiced with beef shawarma.",
         "description_ar": "حمص بالطحينة واللحم المفروم.",
-        "price": 600,
+        "price": 750,
         "options": [],
         "image": ""
       },
       {
         "name": "Hummus Chicken Plate",
         "name_ar": "حمص بالدجاج",
-        "description": "Smooth chickpeas blended with tahini, lemon, garlic, and olive oil lightly spiced with chicken.",
+        "description": "Smooth chickpeas blended with tahini, lemon, garlic and olive oil lightly spiced with chicken shawarma.",
         "description_ar": "حمص بالطحينة والدجاج.",
-        "price": 560,
+        "price": 700,
         "options": [],
         "image": ""
       },
       {
-        "name": "Kebbeh",
+        "name": "Kebbeh (3 pieces)",
         "name_ar": "كبة",
-        "description": "Crispy bulgur shells filled with spiced minced beef and onions, fried to a golden finish.",
+        "description": "Crispy bulgur shells filled with spiced minced beef, walnuts and onions, fried to a golden finish.",
         "description_ar": "كبة مقلية.",
-        "price": 160,
+        "price": 600,
         "options": [],
         "image": ""
       },
       {
-        "name": "Falafel",
+        "name": "Falafel (6 pieces)",
         "name_ar": "فلافل",
-        "description": "Crispy chickpea patties with herbs and spices, served with fresh veggies and hummus.",
+        "description": "Crispy chickpeas patties with herbs and spices, served with fresh veggies and tahini.",
         "description_ar": "فلافل مع حمص وخضار.",
-        "price": 480,
+        "price": 650,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Baba Ghanoj",
+        "name_ar": "بابا غنوج",
+        "description": "Creamy Middle Eastern dip made with roasted eggplant, walnuts, peppers lemon juice, olive oil and pomegranate.",
+        "description_ar": "بابا غنوج مع الجوز والرمان.",
+        "price": 600,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Mutabbal",
+        "name_ar": "متبل",
+        "description": "Roasted eggplants, garlic, lemon juice, tahini and herbs, spices and yoghurt.",
+        "description_ar": "متبل باللبنة والتوابل.",
+        "price": 750,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Warak Inab (6 pieces)",
+        "name_ar": "ورق عنب",
+        "description": "Tender grapevine leaves wrapped around a savoury filling of rice, herbs, vegetables and olive oil.",
+        "description_ar": "ورق عنب محشو بالأرز والخضار.",
+        "price": 700,
+        "options": [],
+        "image": ""
+      }
+    ]
+  },
+  "manakich": {
+    "heroImage": "",
+    "name": "Manakich",
+    "name_ar": "مناقيش",
+    "items": [
+      {
+        "name": "Zqatar",
+        "name_ar": "زعتر",
+        "description": "Traditional manakich dough topped with a vibrant mixture of the aromatic zqatar spice blend and olive oil.",
+        "description_ar": "منقوشة زعتر وزيت.",
+        "price": 300,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Cheese",
+        "name_ar": "جبنة",
+        "description": "Traditional manakich dough topped with a mixture of melty and flavourful cheese.",
+        "description_ar": "منقوشة جبنة.",
+        "price": 400,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Lahmeh Mojarmashe",
+        "name_ar": "لحمة مجرمشة",
+        "description": "Traditional manakich dough topped with a vibrant mixture of aromatic meat.",
+        "description_ar": "منقوشة لحمة مجرمشة.",
+        "price": 400,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Muhammara",
+        "name_ar": "محمرة",
+        "description": "Traditional manakich dough topped with smoky and tangy red pepper and tomato.",
+        "description_ar": "منقوشة محمرة بالفلفل والطماطم.",
+        "price": 300,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Muhammara Cheese",
+        "name_ar": "محمرة بالجبن",
+        "description": "Traditional manakich dough topped with smoky and tangy red pepper and tomato plus mozzarella cheese.",
+        "description_ar": "منقوشة محمرة بالجبن.",
+        "price": 450,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Saffha Debss",
+        "name_ar": "صفيحة دبس",
+        "description": "Middle Eastern dough, topped with a spicy, savoury ground meat mixture with pomegranate molasses.",
+        "description_ar": "صفيحة لحم بدبس الرمان.",
+        "price": 400,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Saffha Tomato",
+        "name_ar": "صفيحة طماطم",
+        "description": "Middle Eastern dough, topped with spicy, savoury and finely diced tomatoes and onions.",
+        "description_ar": "صفيحة طماطم وبصل.",
+        "price": 350,
         "options": [],
         "image": ""
       }
@@ -61,25 +158,25 @@
         "name_ar": "تبولة",
         "description": "Finely chopped parsley, tomatoes, mint, and onion with soaked bulgur, lemon and olive oil.",
         "description_ar": "سلطة بقدونس وبرغل.",
-        "price": 500,
+        "price": 650,
         "options": [],
         "image": ""
       },
       {
         "name": "Shamandar",
         "name_ar": "سلطة شمندر",
-        "description": "Diced beetroot with garlic, cumin, olive oil and lemon for a naturally sweet, earthy flavour.",
-        "description_ar": "سلطة شمندر بالثوم والكمون.",
-        "price": 500,
+        "description": "Diced beetroot with parsley, walnut, olive oil and lemon for a naturally sweet, earthy flavour.",
+        "description_ar": "سلطة شمندر بالجوز.",
+        "price": 650,
         "options": [],
         "image": ""
       },
       {
         "name": "Fattoush",
         "name_ar": "فتوش",
-        "description": "Crisp lettuce, tomatoes, cucumbers, radishes and herbs with toasted pita in tangy lemon dressing.",
+        "description": "Crisp lettuce, tomatoes, cucumbers, radishes, black olives, pomegranate and herbs with toasted pita in tangy lemon and olive oil dressing.",
         "description_ar": "سلطة خضار مع خبز محمص.",
-        "price": 500,
+        "price": 650,
         "options": [],
         "image": ""
       }
@@ -93,45 +190,63 @@
       {
         "name": "Chicken Shawarma",
         "name_ar": "شاورما دجاج",
-        "description": "Thinly sliced marinated chicken, spiced and grilled, served tender and juicy with a plate of fries",
-        "description_ar": "شاورما دجاج مع بطاطس.",
-        "price": 320,
+        "description": "Thinly sliced marinated chicken, spiced and grilled, served tender and juicy.",
+        "description_ar": "شاورما دجاج.",
+        "price": 500,
         "options": [],
         "image": ""
       },
       {
         "name": "Beef Shawarma",
         "name_ar": "شاورما لحم",
-        "description": "Thinly sliced marinated beef, spiced and grilled, served tender and juicy with a plate of fries",
-        "description_ar": "شاورما لحم مع بطاطس.",
-        "price": 360,
+        "description": "Thinly sliced marinated beef, spiced and grilled, served tender and juicy.",
+        "description_ar": "شاورما لحم.",
+        "price": 600,
         "options": [],
         "image": ""
       },
       {
-        "name": "Arabic Shawarma Plate",
-        "name_ar": "صحن شاورما عربي",
-        "description": "Shawarma served with chips, salad and sauces",
-        "description_ar": "شاورما مع بطاطس وسلطة.",
-        "price": 720,
+        "name": "Arabic Chicken Plate",
+        "name_ar": "صحن شاورما دجاج عربي",
+        "description": "Chicken Shawarma served with chips, pickles and garlic sauces.",
+        "description_ar": "شاورما دجاج مع بطاطس ومخلل.",
+        "price": 900,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Arabic Beef Plate",
+        "name_ar": "صحن شاورما لحم عربي",
+        "description": "Beef Shawarma served with chips, pickles and garlic sauces.",
+        "description_ar": "شاورما لحم مع بطاطس ومخلل.",
+        "price": 1000,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Arabic Mix Plate",
+        "name_ar": "صحن شاورما ميكس",
+        "description": "Chicken and Beef Shawarma served with chips, pickles and garlic sauces.",
+        "description_ar": "شاورما دجاج ولحم مع بطاطس ومخلل.",
+        "price": 1500,
         "options": [],
         "image": ""
       },
       {
         "name": "Chicken Laffloufah",
         "name_ar": "لفافة دجاج",
-        "description": "All the classic shawarma flavour in a soft mini roll—juicy meat, fresh crunch and creamy garlic sauce.",
+        "description": "Mini Chicken Shawarma in a soft roll with fresh crunch and creamy garlic sauce.",
         "description_ar": "لفافة شاورما دجاج صغيرة.",
-        "price": 200,
+        "price": 250,
         "options": [],
         "image": ""
       },
       {
         "name": "Beef Laffloufah",
         "name_ar": "لفافة لحم",
-        "description": "All the classic shawarma flavour in a soft mini roll—juicy meat, fresh crunch and creamy garlic sauce.",
+        "description": "Mini Beef Shawarma in a soft roll with fresh crunch and creamy garlic sauce.",
         "description_ar": "لفافة شاورما لحم صغيرة.",
-        "price": 240,
+        "price": 300,
         "options": [],
         "image": ""
       }
@@ -143,81 +258,151 @@
     "name_ar": "أطباق رئيسية",
     "items": [
       {
-        "name": "Full Chicken",
-        "name_ar": "دجاج كامل",
-        "description": "Full rotisserie chicken served with rice, chips, coleslaw, sauces, pickles and 2 pieces of Arabic bread",
+        "name": "Full Rotisserie Chicken",
+        "name_ar": "دجاج كامل مشوي",
+        "description": "Full rotisserie chicken served with rice, chips, sauces, pickles and Arabic bread.",
         "description_ar": "دجاج مشوي كامل مع أرز ومرافقات.",
         "price": 2000,
         "options": [],
         "image": ""
       },
       {
-        "name": "2 Piece Chicken & Chips",
-        "name_ar": "دجاج (قطعتان) مع بطاطس",
-        "description": "2 Piecer served with coleslaw, pickles, Arabic bread and sauces",
-        "description_ar": "قطعتا دجاج مع مرافقات.",
-        "price": 400,
+        "name": "Half Rotisserie Chicken",
+        "name_ar": "نصف دجاج مشوي",
+        "description": "Half rotisserie chicken served with rice, chips, sauces, pickles and Arabic bread.",
+        "description_ar": "نصف دجاج مشوي مع أرز ومرافقات.",
+        "price": 1400,
         "options": [],
         "image": ""
       },
       {
-        "name": "4 Piece Chicken & Chips",
-        "name_ar": "دجاج (٤ قطع) مع بطاطس",
-        "description": "4 Piecer served with coleslaw, pickles, Arabic bread and sauces",
-        "description_ar": "٤ قطع دجاج مع مرافقات.",
-        "price": 800,
+        "name": "Quarter Rotisserie Chicken",
+        "name_ar": "ربع دجاج مشوي",
+        "description": "Quarter rotisserie chicken served with rice, chips, sauces, pickles and Arabic bread.",
+        "description_ar": "ربع دجاج مشوي مع أرز ومرافقات.",
+        "price": 900,
         "options": [],
         "image": ""
       },
       {
         "name": "8 Piece Chicken & Chips",
         "name_ar": "دجاج (٨ قطع) مع بطاطس",
-        "description": "8 Piecer served with coleslaw, pickles, Arabic bread and sauces",
+        "description": "Deep fried 8 Piecer served with coleslaw, pickles, Arabic bread and sauces.",
         "description_ar": "٨ قطع دجاج مع مرافقات.",
         "price": 1600,
         "options": [],
         "image": ""
       },
       {
+        "name": "4 Piece Chicken & Chips",
+        "name_ar": "دجاج (٤ قطع) مع بطاطس",
+        "description": "Deep fried 4 Piecer served with coleslaw, pickles, Arabic bread and sauces.",
+        "description_ar": "٤ قطع دجاج مع مرافقات.",
+        "price": 800,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "2 Piece Chicken & Chips",
+        "name_ar": "دجاج (قطعتان) مع بطاطس",
+        "description": "Deep fried 2 Piecer served with coleslaw, pickles, Arabic bread and sauces.",
+        "description_ar": "قطعتا دجاج مع مرافقات.",
+        "price": 400,
+        "options": [],
+        "image": ""
+      },
+      {
         "name": "Chicken Mandi",
         "name_ar": "مندي دجاج",
-        "description": "Tender, slow-cooked chicken served over fragrant basmati rice with traditional Mandi spices.",
+        "description": "Tender, slow-cooked half chicken served over fragrant rice with traditional Mandi spices.",
         "description_ar": "دجاج مندي مع أرز بسمتي.",
-        "price": 1100,
+        "price": 1200,
         "options": [],
         "image": ""
       },
       {
         "name": "Lamb Mandi",
         "name_ar": "مندي لحم",
-        "description": "Tender, slow-cooked lamb served over fragrant basmati rice with traditional Mandi spices.",
+        "description": "Tender, slow-cooked lamb served over fragrant rice with traditional Mandi spices.",
         "description_ar": "لحم مندي مع أرز بسمتي.",
-        "price": 1300,
+        "price": 1400,
         "options": [],
         "image": ""
       }
     ]
   },
-  "drinks": {
+  "pizza": {
     "heroImage": "",
-    "name": "Drinks",
-    "name_ar": "مشروبات",
+    "name": "Pizza",
+    "name_ar": "بيتزا",
     "items": [
       {
-        "name": "Soda 300 ml",
-        "name_ar": "مشروب غازي",
-        "description": "",
-        "description_ar": "",
-        "price": 200,
+        "name": "Chicken Shawarma Pizza (Medium)",
+        "name_ar": "بيتزا شاورما دجاج وسط",
+        "description": "Pizza topped with chicken shawarma.",
+        "description_ar": "بيتزا شاورما دجاج.",
+        "price": 1000,
         "options": [],
         "image": ""
       },
       {
-        "name": "Water 500 ml",
-        "name_ar": "ماء",
-        "description": "",
-        "description_ar": "",
-        "price": 150,
+        "name": "Beef Shawarma Pizza (Medium)",
+        "name_ar": "بيتزا شاورما لحم وسط",
+        "description": "Pizza topped with beef shawarma.",
+        "description_ar": "بيتزا شاورما لحم.",
+        "price": 1100,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Margharita Pizza (Medium)",
+        "name_ar": "بيتزا مارغريتا وسط",
+        "description": "Classic cheese and tomato pizza.",
+        "description_ar": "بيتزا جبنة وطماطم.",
+        "price": 900,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Sausage Pizza (Medium)",
+        "name_ar": "بيتزا سجق وسط",
+        "description": "Pizza topped with sausage.",
+        "description_ar": "بيتزا سجق.",
+        "price": 1000,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Vegetable Pizza (Medium)",
+        "name_ar": "بيتزا خضار وسط",
+        "description": "Pizza topped with assorted vegetables.",
+        "description_ar": "بيتزا خضار.",
+        "price": 900,
+        "options": [],
+        "image": ""
+      }
+    ]
+  },
+  "dessert": {
+    "heroImage": "",
+    "name": "Dessert",
+    "name_ar": "حلويات",
+    "items": [
+      {
+        "name": "Bhaklawa (4 Pieces)",
+        "name_ar": "بقلاوة (٤ قطع)",
+        "description": "Layers of buttery, crisp filo dough stuffed with a rich pistachio filling, baked to golden perfection and drenched in our house-made honey and rose water syrup.",
+        "description_ar": "بقلاوة بالفستق والقطر.",
+        "price": 600,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Bhaklawa (1 KG)",
+        "name_ar": "بقلاوة (١ كيلو)",
+        "description": "1 kilogram of our signature baklava with pistachio filling and syrup.",
+        "description_ar": "بقلاوة بالفستق والقطر.",
+        "price": 5500,
         "options": [],
         "image": ""
       }
