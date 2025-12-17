@@ -85,7 +85,7 @@ const structuredData = {
   "name_ar": "بيت دمشق",
   "description": "Authentic Syrian restaurant offering traditional shawarma, mandi, hummus, falafel, kebbeh, and more in Nairobi. Experience the taste of Damascus in Kenya.",
   "url": "https://damascushouse.esto.solutions",
-  "telephone": "+254720811925",
+  "telephone": "+254 123 456 789",
   "address": [
     {
       "@type": "PostalAddress",
@@ -202,11 +202,11 @@ export default function RootLayout({
         <meta name="ICBM" content="-1.2631897254973337, 36.792070047236784" />
 
         {/* WhatsApp Business integration */}
-        <meta property="whatsapp:business" content="+254720811925" />
+        <meta property="whatsapp:business" content="+254123456789" />
         <meta property="whatsapp:message" content="Hello Damascus House! I'd like to order Syrian food" />
 
         {/* Ordering Action meta */}
-        <meta property="business:contact:phone" content="+254720811925" />
+        <meta property="business:contact:phone" content="+254123456789" />
         <meta property="business:contact:website" content="https://damascushouse.esto.solutions" />
         <meta property="business:contact:ordering" content="https://damascushouse.esto.solutions/?order=true" />
       </head>
