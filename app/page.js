@@ -70,8 +70,8 @@ const BRAND_CONFIG = {
   contact: {
     whatsappNumber: "+254720811925",
     whatsappMessage: {
-      en: "Hello! I'd like to place an order from",
-      ar: "مرحباً! أود تقديم طلب من"
+      en: "Hello! I'd like to place an order from Damascus House.\n\n",
+      ar: "مرحباً! أود تقديم طلب من مطعم دمشق.\n\n"
     }
   },
 
@@ -188,6 +188,53 @@ const getItemDisplayName = (item, selectedOption = null, language) => {
   return baseName;
 };
 
+// WhatsApp message composition function
+const composeWhatsAppMessage = (cart, orderNotes, language, currency) => {
+  const { whatsappMessage } = BRAND_CONFIG.contact;
+  const symbol = language === 'en' ? currency.symbolEn : currency.symbol;
+
+  let message = whatsappMessage[language] || whatsappMessage.en;
+
+  // Add order details
+  message += `*Order Details:*\n`;
+  message += `====================\n\n`;
+
+  cart.forEach((item, index) => {
+    const itemName = item.displayName || getItemDisplayName(item, item.selectedOption, language);
+    const itemPrice = item.price || getItemPrice(item, item.selectedOption);
+    const itemTotal = itemPrice * (item.quantity || 1);
+
+    message += `${index + 1}. ${itemName}\n`;
+    message += `   Quantity: ${item.quantity || 1}\n`;
+    message += `   Price: ${symbol} ${itemPrice.toLocaleString(currency.format)} each\n`;
+    message += `   Total: ${symbol} ${itemTotal.toLocaleString(currency.format)}\n\n`;
+  });
+
+  // Add subtotal
+  const subtotal = cart.reduce((sum, item) => sum + ((item.price || 0) * (item.quantity || 1)), 0);
+  message += `====================\n`;
+  message += `Subtotal: ${symbol} ${subtotal.toLocaleString(currency.format)}\n`;
+
+  // Add special instructions if any
+  if (orderNotes && orderNotes.trim()) {
+    message += `\n *Special Instructions:*\n`;
+    message += `${orderNotes}\n`;
+  }
+
+  // Add total
+  message += `\n *Total Amount:* ${symbol} ${subtotal.toLocaleString(currency.format)}\n\n`;
+
+  // Add order time
+  const now = new Date();
+  const orderTime = now.toLocaleString(language === 'en' ? 'en-KE' : 'ar-SA');
+  message += ` Order Time: ${orderTime}\n\n`;
+
+  // Add closing
+  message += `Thank you!`;
+
+  return encodeURIComponent(message);
+};
+
 // ==================== MAIN COMPONENT ====================
 export default function MenuPage() {
   const {
@@ -207,7 +254,7 @@ export default function MenuPage() {
   const [activeCategory, setActiveCategory] = useState(Object.keys(menuData)[0] || 'trays');
   const [isItemModalOpen, setIsItemModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
-  const [selectedItemCategory, setSelectedItemCategory] = useState(null); // NEW: track item category
+  const [selectedItemCategory, setSelectedItemCategory] = useState(null);
   const [selectedItemOption, setSelectedItemOption] = useState(null);
   const [isSticky, setIsSticky] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -217,6 +264,7 @@ export default function MenuPage() {
   const [orderNotes, setOrderNotes] = useState('');
   const [language, setLanguage] = useState(defaultLanguage);
   const [itemOptions, setItemOptions] = useState({});
+  const [isWhatsAppSending, setIsWhatsAppSending] = useState(false);
 
   // NEW: Check if order mode is enabled via query parameter
   const [isOrderMode, setIsOrderMode] = useState(false);
@@ -577,14 +625,40 @@ export default function MenuPage() {
   const getTotalItems = () => cart.reduce((sum, item) => sum + (item.quantity || 0), 0);
   const getTotalPrice = () => cart.reduce((sum, item) => sum + ((item.price || 0) * (item.quantity || 0)), 0);
 
-  // Function to open item modal - FIXED: now includes categoryId
+  // Function to open item modal
   const handleItemClick = (item, categoryId) => {
     if (!item || !features.enableItemModal) return;
     setSelectedItem(item);
-    setSelectedItemCategory(categoryId); // Store the category
+    setSelectedItemCategory(categoryId);
     const currentOption = getSelectedOption(item.name);
     setSelectedItemOption(currentOption);
     setIsItemModalOpen(true);
+  };
+
+  // WhatsApp Order Function
+  const handleWhatsAppOrder = () => {
+    if (!features.enableWhatsAppOrder || cart.length === 0) return;
+
+    setIsWhatsAppSending(true);
+
+    // Compose the message
+    const message = composeWhatsAppMessage(cart, orderNotes, language, currency);
+
+    // Format the phone number (remove any non-digit characters except +)
+    const phoneNumber = contact.whatsappNumber.replace(/\s/g, '');
+
+    // Create WhatsApp URL
+    const whatsappUrl = `https://wa.me/${phoneNumber.replace('+', '')}?text=${message}`;
+
+    // Open WhatsApp in a new tab
+    window.open(whatsappUrl, '_blank');
+
+    // Reset sending state after a short delay
+    setTimeout(() => {
+      setIsWhatsAppSending(false);
+      // Optionally close the cart modal
+      setIsCartOpen(false);
+    }, 1000);
   };
 
   // Animation variants
@@ -770,7 +844,7 @@ export default function MenuPage() {
                           y: -8,
                           transition: { duration: 0.2 }
                         } : {}}
-                        onClick={() => handleItemClick(item, categoryId)} // Pass categoryId
+                        onClick={() => handleItemClick(item, categoryId)}
                       >
                         {/* Image */}
                         {layout.showItemImages && item.image && (
@@ -1118,14 +1192,17 @@ export default function MenuPage() {
 
                     {features.enableWhatsAppOrder && (
                       <motion.button
-                        onClick={() => {
-                          // WhatsApp order logic
-                        }}
+                        onClick={handleWhatsAppOrder}
                         style={checkoutButtonStyles}
-                        whileHover={animations.enableAnimations ? { scale: 1.02 } : {}}
-                        whileTap={animations.enableAnimations ? { scale: 0.98 } : {}}
+                        disabled={isWhatsAppSending}
+                        whileHover={!isWhatsAppSending && animations.enableAnimations ? { scale: 1.02 } : {}}
+                        whileTap={!isWhatsAppSending && animations.enableAnimations ? { scale: 0.98 } : {}}
                       >
-                        {language === 'en' ? 'Order via WhatsApp' : 'طلب عبر واتساب'}
+                        {isWhatsAppSending ? (
+                          <span>{language === 'en' ? 'Opening WhatsApp...' : 'جاري فتح واتساب...'}</span>
+                        ) : (
+                          <span>{language === 'en' ? 'Order via WhatsApp' : 'طلب عبر واتساب'}</span>
+                        )}
                       </motion.button>
                     )}
                   </>
@@ -1195,7 +1272,7 @@ export default function MenuPage() {
                     transition={animations.enableAnimations ? { delay: animations.staggerDelay * 2, duration: animations.animationSpeed } : {}}
                   >
                     <img
-                      src={`${images.itemPath}${selectedItemCategory}/${selectedItem.image}`} // FIXED: use selectedItemCategory
+                      src={`${images.itemPath}${selectedItemCategory}/${selectedItem.image}`}
                       alt={getText(selectedItem, 'name', language)}
                       style={itemModalImageStyles}
                       onError={(e) => {
@@ -1658,8 +1735,8 @@ const itemModalContentStyles = {
 };
 
 const itemModalImageContainerStyles = {
-  width: '100%',
-  height: '200px',
+  width: '180px',
+  height: '180px',
   margin: '0 auto 1.5rem',
   borderRadius: '16px',
   overflow: 'hidden'
@@ -1883,7 +1960,7 @@ const categoryButtonStyles = {
   cursor: 'pointer',
   fontSize: '0.9rem',
   fontWeight: '600',
-  // transition: 'all 0.3s ease',
+  transition: 'all 0.3s ease',
   whiteSpace: 'nowrap',
   flexShrink: 0,
   backgroundColor: BRAND_CONFIG.colors.white,
@@ -2214,7 +2291,7 @@ const cartTotalPriceStyles = {
 const checkoutButtonStyles = {
   width: '100%',
   padding: '1rem 2rem',
-  backgroundColor: BRAND_CONFIG.colors.secondary,
+  backgroundColor: '#25D366',
   color: BRAND_CONFIG.colors.white,
   border: 'none',
   borderRadius: '12px',
@@ -2225,7 +2302,8 @@ const checkoutButtonStyles = {
   fontFamily: 'inherit',
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'center'
+  justifyContent: 'center',
+  marginTop: '1rem'
 };
 
 const addToCartButtonStyles = {
