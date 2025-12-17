@@ -207,6 +207,7 @@ export default function MenuPage() {
   const [activeCategory, setActiveCategory] = useState(Object.keys(menuData)[0] || 'trays');
   const [isItemModalOpen, setIsItemModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [selectedItemCategory, setSelectedItemCategory] = useState(null); // NEW: track item category
   const [selectedItemOption, setSelectedItemOption] = useState(null);
   const [isSticky, setIsSticky] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -457,7 +458,7 @@ export default function MenuPage() {
 
     window.scrollTo({
       top: offsetPosition,
-      behavior: 'smooth'
+      behavior: 'instant'
     });
 
     // Reset scrolling flag after animation completes
@@ -576,10 +577,11 @@ export default function MenuPage() {
   const getTotalItems = () => cart.reduce((sum, item) => sum + (item.quantity || 0), 0);
   const getTotalPrice = () => cart.reduce((sum, item) => sum + ((item.price || 0) * (item.quantity || 0)), 0);
 
-  // Function to open item modal
-  const handleItemClick = (item) => {
+  // Function to open item modal - FIXED: now includes categoryId
+  const handleItemClick = (item, categoryId) => {
     if (!item || !features.enableItemModal) return;
     setSelectedItem(item);
+    setSelectedItemCategory(categoryId); // Store the category
     const currentOption = getSelectedOption(item.name);
     setSelectedItemOption(currentOption);
     setIsItemModalOpen(true);
@@ -768,7 +770,7 @@ export default function MenuPage() {
                           y: -8,
                           transition: { duration: 0.2 }
                         } : {}}
-                        onClick={() => handleItemClick(item)}
+                        onClick={() => handleItemClick(item, categoryId)} // Pass categoryId
                       >
                         {/* Image */}
                         {layout.showItemImages && item.image && (
@@ -1185,7 +1187,7 @@ export default function MenuPage() {
               } : {}}
             >
               <div style={itemModalContentStyles}>
-                {layout.showItemImages && selectedItem.image && (
+                {layout.showItemImages && selectedItem.image && selectedItemCategory && (
                   <motion.div
                     style={itemModalImageContainerStyles}
                     initial={animations.enableAnimations ? { scale: 0.8, opacity: 0 } : {}}
@@ -1193,7 +1195,7 @@ export default function MenuPage() {
                     transition={animations.enableAnimations ? { delay: animations.staggerDelay * 2, duration: animations.animationSpeed } : {}}
                   >
                     <img
-                      src={`${images.itemPath}${selectedItem.category || 'trays'}/${selectedItem.image}`}
+                      src={`${images.itemPath}${selectedItemCategory}/${selectedItem.image}`} // FIXED: use selectedItemCategory
                       alt={getText(selectedItem, 'name', language)}
                       style={itemModalImageStyles}
                       onError={(e) => {
@@ -1656,8 +1658,8 @@ const itemModalContentStyles = {
 };
 
 const itemModalImageContainerStyles = {
-  width: '180px',
-  height: '180px',
+  width: '100%',
+  height: '200px',
   margin: '0 auto 1.5rem',
   borderRadius: '16px',
   overflow: 'hidden'
@@ -1881,7 +1883,7 @@ const categoryButtonStyles = {
   cursor: 'pointer',
   fontSize: '0.9rem',
   fontWeight: '600',
-  transition: 'all 0.3s ease',
+  // transition: 'all 0.3s ease',
   whiteSpace: 'nowrap',
   flexShrink: 0,
   backgroundColor: BRAND_CONFIG.colors.white,

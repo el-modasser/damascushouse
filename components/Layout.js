@@ -26,8 +26,8 @@ const BRAND_CONFIG = {
 
   // Contact information
   contact: {
-    phone: "+254 123 456 789", // Update with your actual phone
-    whatsapp: "+254123456789" // Update with your actual WhatsApp
+    phone: "+254720811925", // Update with your actual phone
+    whatsapp: "+254720811925" // Update with your actual WhatsApp
   },
 
   // Locations
