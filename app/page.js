@@ -48,7 +48,7 @@ const BRAND_CONFIG = {
       id: 'main',
       name: 'Main Branch',
       nameAr: '',
-      whatsappNumber: '+254123456789',
+      whatsappNumber: '+254720811925',
       address: 'Nairobi CBD, Kenya'
     }
   ],
@@ -68,7 +68,7 @@ const BRAND_CONFIG = {
   },
 
   contact: {
-    whatsappNumber: "+254123456789",
+    whatsappNumber: "+254720811925",
     whatsappMessage: {
       en: "Hello! I'd like to place an order from",
       ar: "مرحباً! أود تقديم طلب من"
@@ -224,9 +224,11 @@ export default function MenuPage() {
   const categoriesRef = useRef(null);
   const categoryScrollRef = useRef(null);
   const categorySectionsRef = useRef({});
-  const observerRef = useRef(null);
   const isScrollingRef = useRef(false);
   const scrollTimeoutRef = useRef(null);
+  const lastScrollTopRef = useRef(0);
+  const scrollAnimationFrameRef = useRef(null);
+  const categoryPositionsRef = useRef({});
 
   // Get category order
   const categoryOrder = Object.keys(menuData);
@@ -294,56 +296,130 @@ export default function MenuPage() {
     };
   }, [isItemModalOpen, isCartOpen]);
 
-  // NEW: Intersection Observer to detect which category is currently in view
-  useEffect(() => {
-    // Clean up previous observer
-    if (observerRef.current) {
-      observerRef.current.disconnect();
-    }
+  // Calculate and store category positions
+  const updateCategoryPositions = useCallback(() => {
+    const headerHeight = categoriesRef.current ? categoriesRef.current.offsetHeight : 0;
 
-    // Create new observer
-    observerRef.current = new IntersectionObserver(
-      (entries) => {
-        // Find the most visible category
-        let mostVisibleEntry = null;
-        let highestIntersection = 0;
-
-        entries.forEach(entry => {
-          if (entry.intersectionRatio > highestIntersection) {
-            highestIntersection = entry.intersectionRatio;
-            mostVisibleEntry = entry;
-          }
-        });
-
-        // Update active category if we found one with significant visibility
-        if (mostVisibleEntry && highestIntersection > 0.3 && !isScrollingRef.current) {
-          const categoryId = mostVisibleEntry.target.dataset.categoryId;
-          if (categoryId && categoryId !== activeCategory) {
-            setActiveCategory(categoryId);
-          }
-        }
-      },
-      {
-        threshold: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
-        rootMargin: '-100px 0px -100px 0px' // Buffer to trigger before category fully enters view
-      }
-    );
-
-    // Observe all category sections
-    Object.values(categorySectionsRef.current).forEach(section => {
+    Object.keys(categorySectionsRef.current).forEach(categoryId => {
+      const section = categorySectionsRef.current[categoryId];
       if (section) {
-        observerRef.current.observe(section);
+        const rect = section.getBoundingClientRect();
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const top = scrollTop + rect.top - headerHeight - 50; // 50px buffer
+        const bottom = top + rect.height;
+
+        categoryPositionsRef.current[categoryId] = {
+          top,
+          bottom,
+          height: rect.height
+        };
       }
     });
+  }, []);
 
-    return () => {
-      if (observerRef.current) {
-        observerRef.current.disconnect();
+  // Scroll-based active category detection - Much more reliable than Intersection Observer
+  useEffect(() => {
+    if (!layout.stickyCategories) return;
+
+    let ticking = false;
+    let lastActiveCategory = activeCategory;
+
+    const handleScroll = () => {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const scrollDirection = scrollTop > lastScrollTopRef.current ? 'down' : 'up';
+      lastScrollTopRef.current = scrollTop;
+
+      // Skip if programmatically scrolling
+      if (isScrollingRef.current) return;
+
+      if (!ticking) {
+        scrollAnimationFrameRef.current = requestAnimationFrame(() => {
+          updateCategoryPositions();
+
+          // Find which category is currently at the top of the viewport
+          const headerHeight = categoriesRef.current ? categoriesRef.current.offsetHeight : 0;
+          const viewportTop = scrollTop + headerHeight + 100; // 100px buffer from top
+
+          let currentCategory = lastActiveCategory;
+          let minDistance = Infinity;
+
+          // Find the category whose top is closest to the viewport top
+          Object.entries(categoryPositionsRef.current).forEach(([categoryId, position]) => {
+            if (!position) return;
+
+            // Calculate distance from category top to viewport top
+            const distance = Math.abs(position.top - viewportTop);
+
+            // If we're scrolling down, prioritize categories above the viewport
+            if (scrollDirection === 'down') {
+              if (position.top <= viewportTop && position.bottom > viewportTop - 100) {
+                // Category is currently visible
+                if (distance < minDistance) {
+                  minDistance = distance;
+                  currentCategory = categoryId;
+                }
+              }
+            } else {
+              // Scrolling up
+              if (position.top <= viewportTop + 100 && position.bottom > viewportTop - 200) {
+                if (distance < minDistance) {
+                  minDistance = distance;
+                  currentCategory = categoryId;
+                }
+              }
+            }
+          });
+
+          // Also check if viewport is past the middle of any category
+          Object.entries(categoryPositionsRef.current).forEach(([categoryId, position]) => {
+            if (!position) return;
+
+            const categoryMiddle = position.top + (position.height / 2);
+            const distanceToMiddle = Math.abs(categoryMiddle - viewportTop);
+
+            // If viewport is near the middle of this category, make it active
+            if (distanceToMiddle < minDistance && distanceToMiddle < 200) {
+              minDistance = distanceToMiddle;
+              currentCategory = categoryId;
+            }
+          });
+
+          // Update active category if changed
+          if (currentCategory && currentCategory !== lastActiveCategory) {
+            lastActiveCategory = currentCategory;
+            setActiveCategory(currentCategory);
+          }
+
+          ticking = false;
+        });
+
+        ticking = true;
       }
     };
-  }, [activeCategory]);
 
-  // NEW: Scroll active category into view (horizontal)
+    // Initial calculation
+    setTimeout(updateCategoryPositions, 100);
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', updateCategoryPositions);
+    window.addEventListener('load', updateCategoryPositions);
+
+    return () => {
+      if (scrollAnimationFrameRef.current) {
+        cancelAnimationFrame(scrollAnimationFrameRef.current);
+      }
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', updateCategoryPositions);
+      window.removeEventListener('load', updateCategoryPositions);
+    };
+  }, [layout.stickyCategories, updateCategoryPositions]);
+
+  // Update positions when categories change (search, etc)
+  useEffect(() => {
+    setTimeout(updateCategoryPositions, 100);
+  }, [searchQuery, updateCategoryPositions]);
+
+  // Scroll active category into view (horizontal)
   useEffect(() => {
     if (!categoryScrollRef.current) return;
 
@@ -366,7 +442,7 @@ export default function MenuPage() {
     }
   }, [activeCategory]);
 
-  // NEW: Smooth scroll to category when clicking on tab
+  // Smooth scroll to category when clicking on tab
   const scrollToCategory = useCallback((categoryId) => {
     const section = categorySectionsRef.current[categoryId];
     if (!section) return;
@@ -375,7 +451,7 @@ export default function MenuPage() {
     setActiveCategory(categoryId);
 
     // Calculate position with offset for sticky header
-    const headerOffset = categoriesRef.current ? categoriesRef.current.offsetHeight + 20 : 80;
+    const headerOffset = categoriesRef.current ? categoriesRef.current.offsetHeight + 20 : 100;
     const elementPosition = section.offsetTop;
     const offsetPosition = elementPosition - headerOffset;
 
@@ -384,12 +460,13 @@ export default function MenuPage() {
       behavior: 'smooth'
     });
 
-    // Reset scrolling flag
+    // Reset scrolling flag after animation completes
     clearTimeout(scrollTimeoutRef.current);
     scrollTimeoutRef.current = setTimeout(() => {
       isScrollingRef.current = false;
-    }, 500);
-  }, []);
+      updateCategoryPositions(); // Recalculate positions after scroll
+    }, 600);
+  }, [updateCategoryPositions]);
 
   // Filter and sort items for a specific category
   const getFilteredAndSortedItems = useCallback((categoryId) => {
@@ -644,6 +721,7 @@ export default function MenuPage() {
               ref={(el) => categorySectionsRef.current[categoryId] = el}
               data-category-id={categoryId}
               style={categorySectionStyles}
+              className="category-section"
             >
               {/* Category Header */}
               <motion.h2
@@ -1346,17 +1424,30 @@ export default function MenuPage() {
         .sticky-categories.sticky {
           box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
+        
+        /* Mobile optimizations */
+        @media (max-width: 768px) {
+          .category-section {
+            scroll-margin-top: 120px;
+          }
+        }
+        
+        /* Improve scroll performance */
+        .category-section {
+          will-change: transform;
+        }
       `}</style>
     </Layout>
   );
 }
 
-// ==================== NEW STYLES ====================
+// ==================== STYLES ====================
 
 // Category Section Styles
 const categorySectionStyles = {
   marginBottom: '4rem',
-  scrollMarginTop: '120px' // For anchor linking with sticky header
+  scrollMarginTop: '140px',
+  position: 'relative'
 };
 
 const categoryTitleStyles = {
@@ -1386,8 +1477,6 @@ const globalNoResultsStyles = {
   borderRadius: '12px',
   margin: '2rem 0'
 };
-
-// ==================== EXISTING STYLES ====================
 
 // Option Badge
 const optionBadgeStyles = {
