@@ -2,49 +2,49 @@
   "appetizers": {
     "heroImage": "",
     "name": "Appetizers",
-    "name_ar": "مقبلات",
+    "name_ar": "المقبلات",
     "items": [
       {
         "name": "Hummus Plate",
-        "name_ar": "حمص",
+        "name_ar": "طبق الحمص",
         "description": "Smooth chickpeas blended with tahini, lemon, garlic and olive oil, lightly spiced.",
-        "description_ar": "حمص ناعم مع الطحينة والليمون والثوم وزيت الزيتون، مع توابل خفيفة.",
+        "description_ar": "حمص ناعم مخلوط بالطحينة والليمون والثوم وزيت الزيتون، متبل قليلاً.",
         "price": 600,
         "options": [],
         "image": ""
       },
       {
         "name": "Hummus Beef Plate",
-        "name_ar": "حمص باللحم",
-        "description": "Smooth chickpeas blended with tahini, lemon, garlic and olive oil, lightly spiced with beef shawarma.",
-        "description_ar": "حمص ناعم مع الطحينة والليمون والثوم وزيت الزيتون، مع شاورما لحم بتوابل خفيفة.",
+        "name_ar": "طبق الحمص باللحم",
+        "description": "Smooth chickpeas blended with tahini, lemon, garlic and olive oil, lightly spiced, with beef shawarma.",
+        "description_ar": "حمص ناعم مخلوط بالطحينة والليمون والثوم وزيت الزيتون، متبل قليلاً، مع شاورما لحم.",
         "price": 750,
         "options": [],
         "image": ""
       },
       {
         "name": "Hummus Chicken Plate",
-        "name_ar": "حمص بالدجاج",
-        "description": "Smooth chickpeas blended with tahini, lemon, garlic and olive oil lightly spiced with chicken shawarma.",
-        "description_ar": "حمص ناعم مع الطحينة والليمون والثوم وزيت الزيتون، مع شاورما دجاج بتوابل خفيفة.",
+        "name_ar": "طبق الحمص بالدجاج",
+        "description": "Smooth chickpeas blended with tahini, lemon, garlic and olive oil lightly spiced, with chicken shawarma.",
+        "description_ar": "حمص ناعم مخلوط بالطحينة والليمون والثوم وزيت الزيتون، متبل قليلاً، مع شاورما دجاج.",
         "price": 700,
         "options": [],
         "image": ""
       },
       {
         "name": "Kebbeh (3 pieces)",
-        "name_ar": "كبة",
+        "name_ar": "كبة (3 قطع)",
         "description": "Crispy bulgur shells filled with spiced minced beef, walnuts and onions, fried to a golden finish.",
-        "description_ar": "أصداف برغل مقرمشة محشوة بلحم بقري مفروم مع التوابل والجوز والبصل، مقلية حتى تصبح ذهبية.",
+        "description_ar": "قشرة برغل مقرمشة محشوة بلحم بقري مفروم متبل، جوز مكسرات وبصل، مقلية حتى تتحول للون الذهبي.",
         "price": 600,
         "options": [],
         "image": ""
       },
       {
         "name": "Falafel (6 pieces)",
-        "name_ar": "فلافل",
+        "name_ar": "فلافل (6 قطع)",
         "description": "Crispy chickpeas patties with herbs and spices, served with fresh veggies and tahini.",
-        "description_ar": "أقراص حمص مقرمشة مع الأعشاب والتوابل، تقدم مع خضار طازجة وطحينة.",
+        "description_ar": "أقراص حمص مقرمشة مع أعشاب وتوابل، تقدم مع خضروات طازجة وطحينة.",
         "price": 650,
         "options": [],
         "image": ""
@@ -52,8 +52,8 @@
       {
         "name": "Baba Ghanoj",
         "name_ar": "بابا غنوج",
-        "description": "Creamy Middle Eastern dip made with roasted eggplant, walnuts, peppers lemon juice, olive oil and pomegranate.",
-        "description_ar": "غموس كريمي شرقي مصنوع من الباذنجان المشوي والجوز والفلفل وعصير الليمون وزيت الزيتون والرمان.",
+        "description": "Middle Eastern dip made from roasted eggplant, walnuts, peppers lemon juice, olive oil and pomegranate",
+        "description_ar": "غمسة شرق أوسطية مصنوعة من الباذنجان المشوي، الجوز، الفلفل، عصير الليمون، زيت الزيتون والرمان",
         "price": 600,
         "options": [],
         "image": ""
@@ -62,16 +62,16 @@
         "name": "Mutabbal",
         "name_ar": "متبل",
         "description": "Roasted eggplants, garlic, lemon juice, tahini and herbs, spices and yoghurt.",
-        "description_ar": "باذنجان مشوي مع الثوم وعصير الليمون والطحينة والأعشاب والتوابل واللبن.",
+        "description_ar": "باذنجان مشوي، ثوم، عصير ليمون، طحينة وأعشاب، توابل ولبن.",
         "price": 750,
         "options": [],
         "image": ""
       },
       {
         "name": "Warak Inab (6 pieces)",
-        "name_ar": "ورق عنب",
+        "name_ar": "ورق عنب (6 قطع)",
         "description": "Tender grapevine leaves wrapped around a savoury filling of rice, herbs, vegetables and olive oil.",
-        "description_ar": "أوراق عنب طرية محشوة بحشوة مالحة من الأرز والأعشاب والخضار وزيت الزيتون.",
+        "description_ar": "أوراق عنب طرية ملفوفة حول حشوة لذيذة من الأرز، الأعشاب، الخضروات وزيت الزيتون.",
         "price": 700,
         "options": [],
         "image": ""
@@ -84,10 +84,10 @@
     "name_ar": "مناقيش",
     "items": [
       {
-        "name": "Zqatar",
+        "name": "Zaatar",
         "name_ar": "زعتر",
-        "description": "Traditional manakich dough topped with a vibrant mixture of the aromatic zqatar spice blend and olive oil.",
-        "description_ar": "عجينة المناقيش التقليدية مغطاة بخليط نابض بالحياة من خليط الزعتر العطري وزيت الزيتون.",
+        "description": "Traditional manakich dough topped with a vibrant mixture of the aromatic za'atar spice blend and olive oil.",
+        "description_ar": "عجينة مناقيش تقليدية مغطاة بمزيج نابض بالحياة من خليط توابل الزعتر العطري وزيت الزيتون.",
         "price": 300,
         "options": [],
         "image": ""
@@ -96,7 +96,7 @@
         "name": "Cheese",
         "name_ar": "جبنة",
         "description": "Traditional manakich dough topped with a mixture of melty and flavourful cheese.",
-        "description_ar": "عجينة المناقيش التقليدية مغطاة بخليط من الجبنة الذائبة والنكهة.",
+        "description_ar": "عجينة مناقيش تقليدية مغطاة بمزيج من الجبنة الذائبة والمليئة بالنكهة.",
         "price": 400,
         "options": [],
         "image": ""
@@ -105,7 +105,7 @@
         "name": "Lahmeh Mojarmashe",
         "name_ar": "لحمة مجرمشة",
         "description": "Traditional manakich dough topped with a vibrant mixture of aromatic meat.",
-        "description_ar": "عجينة المناقيش التقليدية مغطاة بخليط نابض بالحياة من اللحم العطري.",
+        "description_ar": "عجينة مناقيش تقليدية مغطاة بمزيج نابض بالحياة من اللحم العطري.",
         "price": 400,
         "options": [],
         "image": ""
@@ -113,36 +113,36 @@
       {
         "name": "Muhammara",
         "name_ar": "محمرة",
-        "description": "Traditional manakich dough topped with smoky and tangy red pepper and tomato.",
-        "description_ar": "عجينة المناقيش التقليدية مغطاة بالفلفل الأحمر والطماطم المدخن واللاذع.",
+        "description": "Traditional manakich dough topped with smoky and tangy red peppers and tomatoes.",
+        "description_ar": "عجينة مناقيش تقليدية مغطاة بالفلفل الأحمر والطماطم المدخن واللاذع.",
         "price": 300,
         "options": [],
         "image": ""
       },
       {
         "name": "Muhammara Cheese",
-        "name_ar": "محمرة بالجبن",
-        "description": "Traditional manakich dough topped with smoky and tangy red pepper and tomato plus mozzarella cheese.",
-        "description_ar": "عجينة المناقيش التقليدية مغطاة بالفلفل الأحمر والطماطم المدخن واللاذع مع جبنة الموزاريلا.",
-        "price": 450,
-        "options": [],
-        "image": ""
-      },
-      {
-        "name": "Saffha Debss",
-        "name_ar": "صفيحة دبس",
-        "description": "Middle Eastern dough, topped with a spicy, savoury ground meat mixture with pomegranate molasses.",
-        "description_ar": "عجينة شرق أوسطية مغطاة بخليط لحم مفروم حار ومالح مع دبس الرمان.",
+        "name_ar": "محمرة بالجبنة",
+        "description": "Traditional manakich dough topped with smoky and tangy red peppers and tomatoes plus mozzarella cheese.",
+        "description_ar": "عجينة مناقيش تقليدية مغطاة بالفلفل الأحمر والطماطم المدخن واللاذع بالإضافة إلى جبنة الموزاريلا.",
         "price": 400,
         "options": [],
         "image": ""
       },
       {
-        "name": "Saffha Tomato",
+        "name": "Safiha Debss",
+        "name_ar": "صفيحة دبس",
+        "description": "Middle Eastern dough, topped with a spicy, savoury ground meat mixture with pomegranate molasses.",
+        "description_ar": "عجينة شرق أوسطية، مغطاة بمزيج لحم مفروم حار ولذيذ مع دبس الرمان.",
+        "price": 450,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Safiha Tomato",
         "name_ar": "صفيحة طماطم",
         "description": "Middle Eastern dough, topped with spicy, savoury and finely diced tomatoes and onions.",
-        "description_ar": "عجينة شرق أوسطية مغطاة بطماطم وبصل مقطعين ناعماً بحالة حارة ومالحة.",
-        "price": 350,
+        "description_ar": "عجينة شرق أوسطية، مغطاة بطماطم وبصل مفرومين ناعماً وحار ولذيذ.",
+        "price": 400,
         "options": [],
         "image": ""
       }
@@ -156,17 +156,17 @@
       {
         "name": "Tabbouleh",
         "name_ar": "تبولة",
-        "description": "Finely chopped parsley, tomatoes, mint, and onion with soaked bulgur, lemon and olive oil.",
-        "description_ar": "سلطة مكونة من بقدونس وطماطم ونعناع وبصل مفرومين ناعماً مع برغل منقوع وعصير ليمون وزيت زيتون.",
+        "description": "Finely chopped parsley, tomatoes, mint, and onions with soaked bulgur, lemon and olive oil.",
+        "description_ar": "بقدونس مفروم ناعم، طماطم، نعناع، وبصل مع برغل منقوع، ليمون وزيت زيتون.",
         "price": 650,
         "options": [],
         "image": ""
       },
       {
         "name": "Shamandar",
-        "name_ar": "سلطة شمندر",
+        "name_ar": "شمندر",
         "description": "Diced beetroot with parsley, walnut, olive oil and lemon for a naturally sweet, earthy flavour.",
-        "description_ar": "سلطة شمندر مكعبات مع بقدونس وجوز وزيت زيتون وليمون لنكهة حلوة طبيعية وترابية.",
+        "description_ar": "شمندر مقطع مع بقدونس، جوز، زيت زيتون وليمون لنكهة حلوة طبيعية وترابية.",
         "price": 650,
         "options": [],
         "image": ""
@@ -175,23 +175,23 @@
         "name": "Fattoush",
         "name_ar": "فتوش",
         "description": "Crisp lettuce, tomatoes, cucumbers, radishes, black olives, pomegranate and herbs with toasted pita in tangy lemon and olive oil dressing.",
-        "description_ar": "خس مقرمش وطماطم وخيار وفجل وزيتون أسود ورمان وأعشاب مع خبز بيتا محمص في صلصة ليمون وزيت زيتون لاذعة.",
+        "description_ar": "خس مقرمش، طماطم، خيار، فجل، زيتون أسود، رمان وأعشاب مع خبز بيتا محمص في صلصة ليمون لاذعة وزيت زيتون.",
         "price": 650,
         "options": [],
         "image": ""
       }
     ]
   },
-  "shawarma_and_wraps": {
+  "shawarma": {
     "heroImage": "",
-    "name": "Shawarma & Wraps",
-    "name_ar": "شاورما ولفائف",
+    "name": "Shawarma",
+    "name_ar": "شاورما",
     "items": [
       {
         "name": "Chicken Shawarma",
         "name_ar": "شاورما دجاج",
         "description": "Thinly sliced marinated chicken, spiced and grilled, served tender and juicy.",
-        "description_ar": "شرائح رقيقة من الدجاج المتبل والمشوي بالتوابل، مقدم بطريقة طرية وعصية.",
+        "description_ar": "دجاج مقطع شرائح رقيقة ومتبل، متبل ومشوي، يقدم طريًا وعصيًا.",
         "price": 500,
         "options": [],
         "image": ""
@@ -200,53 +200,103 @@
         "name": "Beef Shawarma",
         "name_ar": "شاورما لحم",
         "description": "Thinly sliced marinated beef, spiced and grilled, served tender and juicy.",
-        "description_ar": "شرائح رقيقة من اللحم البقري المتبل والمشوي بالتوابل، مقدم بطريقة طرية وعصية.",
+        "description_ar": "لحم مقطع شرائح رقيقة ومتبل، متبل ومشوي، يقدم طريًا وعصيًا.",
         "price": 600,
         "options": [],
         "image": ""
       },
       {
         "name": "Arabic Chicken Plate",
-        "name_ar": "صحن شاورما دجاج عربي",
+        "name_ar": "طبق دجاج عربي",
         "description": "Chicken Shawarma served with chips, pickles and garlic sauces.",
-        "description_ar": "شاورما دجاج تقدم مع بطاطس ومخلل وصلصات ثوم.",
+        "description_ar": "شاورما دجاج تقدم مع بطاطس مقلية، مخللات وصلصات ثوم.",
         "price": 900,
         "options": [],
         "image": ""
       },
       {
         "name": "Arabic Beef Plate",
-        "name_ar": "صحن شاورما لحم عربي",
-        "description": "Beef Shawarma served with chips, pickles and garlic sauces.",
-        "description_ar": "شاورما لحم تقدم مع بطاطس ومخلل وصلصات ثوم.",
+        "name_ar": "طبق لحم عربي",
+        "description": "Beef Shawarma served with chips, pickles and tahini sauces.",
+        "description_ar": "شاورما لحم تقدم مع بطاطس مقلية، مخللات وصلصات طحينة.",
         "price": 1000,
         "options": [],
         "image": ""
       },
       {
         "name": "Arabic Mix Plate",
-        "name_ar": "صحن شاورما ميكس",
-        "description": "Chicken and Beef Shawarma served with chips, pickles and garlic sauces.",
-        "description_ar": "شاورما دجاج ولحم تقدم مع بطاطس ومخلل وصلصات ثوم.",
+        "name_ar": "طبق مشكل عربي",
+        "description": "Chicken and Beef Shawarma served with chips, pickles and garlic and tahini sauces.",
+        "description_ar": "شاورما دجاج ولحم تقدم مع بطاطس مقلية، مخللات وصلصات ثوم وطحينة.",
         "price": 1500,
         "options": [],
         "image": ""
       },
       {
+        "name": "Chips Plate",
+        "name_ar": "طبط بطاطس مقلية",
+        "description": "A plate of fries served hot and spiced.",
+        "description_ar": "طبق من البطاطس المقلية يقدم ساخنًا ومتبلًا.",
+        "price": 350,
+        "options": [],
+        "image": ""
+      }
+    ]
+  },
+  "laffloufah": {
+    "heroImage": "",
+    "name": "Laffloufah",
+    "name_ar": "لفلوفة",
+    "items": [
+      {
         "name": "Chicken Laffloufah",
-        "name_ar": "لفافة دجاج",
-        "description": "Mini Chicken Shawarma in a soft roll with fresh crunch and creamy garlic sauce.",
-        "description_ar": "شاورما دجاج صغيرة في رول طري مع قرمشة طازجة وصلصة ثوم كريمية.",
+        "name_ar": "لفلوفة دجاج",
+        "description": "Mini Chicken Shawarma.",
+        "description_ar": "شاورما دجاج صغيرة.",
         "price": 250,
         "options": [],
         "image": ""
       },
       {
         "name": "Beef Laffloufah",
-        "name_ar": "لفافة لحم",
-        "description": "Mini Beef Shawarma in a soft roll with fresh crunch and creamy garlic sauce.",
-        "description_ar": "شاورما لحم صغيرة في رول طري مع قرمشة طازجة وصلصة ثوم كريمية.",
+        "name_ar": "لفلوفة لحم",
+        "description": "Mini Beef Shawarma.",
+        "description_ar": "شاورما لحم صغيرة.",
         "price": 300,
+        "options": [],
+        "image": ""
+      }
+    ]
+  },
+  "extra_saucers": {
+    "heroImage": "",
+    "name": "Extra Saucers",
+    "name_ar": "صحون إضافية",
+    "items": [
+      {
+        "name": "Extra Garlic Saucer",
+        "name_ar": "صحن ثوم إضافي",
+        "description": "",
+        "description_ar": "",
+        "price": 100,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Extra Tahini Saucer",
+        "name_ar": "صحن طحينة إضافي",
+        "description": "",
+        "description_ar": "",
+        "price": 100,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Extra Pickles Saucer",
+        "name_ar": "صحن مخلل إضافي",
+        "description": "",
+        "description_ar": "",
+        "price": 100,
         "options": [],
         "image": ""
       }
@@ -255,58 +305,58 @@
   "main_courses": {
     "heroImage": "",
     "name": "Main Courses",
-    "name_ar": "أطباق رئيسية",
+    "name_ar": "الأطباق الرئيسية",
     "items": [
       {
         "name": "Full Rotisserie Chicken",
-        "name_ar": "دجاج كامل مشوي",
+        "name_ar": "دجاج مشوي كامل",
         "description": "Full rotisserie chicken served with rice, chips, sauces, pickles and Arabic bread.",
-        "description_ar": "دجاج مشوي كامل على السيخ يقدم مع أرز وبطاطس وصلصات ومخلل وخبز عربي.",
+        "description_ar": "دجاج مشوي كامل يقدم مع أرز، بطاطس مقلية، صلصات، مخللات وخبز عربي.",
         "price": 2000,
         "options": [],
         "image": ""
       },
       {
         "name": "Half Rotisserie Chicken",
-        "name_ar": "نصف دجاج مشوي",
+        "name_ar": "دجاج مشوي نصف",
         "description": "Half rotisserie chicken served with rice, chips, sauces, pickles and Arabic bread.",
-        "description_ar": "نصف دجاج مشوي على السيخ يقدم مع أرز وبطاطس وصلصات ومخلل وخبز عربي.",
+        "description_ar": "دجاج مشوي نصف يقدم مع أرز، بطاطس مقلية، صلصات، مخللات وخبز عربي.",
         "price": 1400,
         "options": [],
         "image": ""
       },
       {
         "name": "Quarter Rotisserie Chicken",
-        "name_ar": "ربع دجاج مشوي",
+        "name_ar": "دجاج مشوي ربع",
         "description": "Quarter rotisserie chicken served with rice, chips, sauces, pickles and Arabic bread.",
-        "description_ar": "ربع دجاج مشوي على السيخ يقدم مع أرز وبطاطس وصلصات ومخلل وخبز عربي.",
+        "description_ar": "دجاج مشوي ربع يقدم مع أرز، بطاطس مقلية، صلصات، مخللات وخبز عربي.",
         "price": 900,
         "options": [],
         "image": ""
       },
       {
-        "name": "8 Piece Chicken & Chips",
-        "name_ar": "دجاج (٨ قطع) مع بطاطس",
+        "name": "Broast 8 Piecer + Chips",
+        "name_ar": "بروست 8 قطع + بطاطس مقلية",
         "description": "Deep fried 8 Piecer served with coleslaw, pickles, Arabic bread and sauces.",
-        "description_ar": "٨ قطع دجاج مقلية تقدم مع سلطة كولسلو ومخلل وخبز عربي وصلصات.",
+        "description_ar": "8 قطع دجاج مقلي عميق يقدم مع سلطة كولسلو، مخللات، خبز عربي وصلصات.",
         "price": 1600,
         "options": [],
         "image": ""
       },
       {
-        "name": "4 Piece Chicken & Chips",
-        "name_ar": "دجاج (٤ قطع) مع بطاطس",
+        "name": "Broast 4 Piecer + Chips",
+        "name_ar": "بروست 4 قطع + بطاطس مقلية",
         "description": "Deep fried 4 Piecer served with coleslaw, pickles, Arabic bread and sauces.",
-        "description_ar": "٤ قطع دجاج مقلية تقدم مع سلطة كولسلو ومخلل وخبز عربي وصلصات.",
+        "description_ar": "4 قطع دجاج مقلي عميق يقدم مع سلطة كولسلو، مخللات، خبز عربي وصلصات.",
         "price": 800,
         "options": [],
         "image": ""
       },
       {
-        "name": "2 Piece Chicken & Chips",
-        "name_ar": "دجاج (قطعتان) مع بطاطس",
+        "name": "Broast 2 Piecer + Chips",
+        "name_ar": "بروست 2 قطع + بطاطس مقلية",
         "description": "Deep fried 2 Piecer served with coleslaw, pickles, Arabic bread and sauces.",
-        "description_ar": "قطعتا دجاج مقلية تقدم مع سلطة كولسلو ومخلل وخبز عربي وصلصات.",
+        "description_ar": "2 قطع دجاج مقلي عميق يقدم مع سلطة كولسلو، مخللات، خبز عربي وصلصات.",
         "price": 400,
         "options": [],
         "image": ""
@@ -315,17 +365,26 @@
         "name": "Chicken Mandi",
         "name_ar": "مندي دجاج",
         "description": "Tender, slow-cooked half chicken served over fragrant rice with traditional Mandi spices.",
-        "description_ar": "نصف دجاج طري ومطبوخ ببطء يقدم على أرز عطري مع توابل المندي التقليدية.",
+        "description_ar": "نصف دجاج طري مطبوخ ببطء يقدم على أرز عطري مع توابل المندي التقليدية.",
         "price": 1200,
         "options": [],
         "image": ""
       },
       {
         "name": "Lamb Mandi",
-        "name_ar": "مندي لحم",
+        "name_ar": "مندي خروف",
         "description": "Tender, slow-cooked lamb served over fragrant rice with traditional Mandi spices.",
-        "description_ar": "لحم ضأن طري ومطبوخ ببطء يقدم على أرز عطري مع توابل المندي التقليدية.",
+        "description_ar": "خروف طري مطبوخ ببطء يقدم على أرز عطري مع توابل المندي التقليدية.",
         "price": 1400,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Extra Rice",
+        "name_ar": "أرز إضافي",
+        "description": "",
+        "description_ar": "",
+        "price": 400,
         "options": [],
         "image": ""
       }
@@ -337,48 +396,103 @@
     "name_ar": "بيتزا",
     "items": [
       {
-        "name": "Chicken Shawarma Pizza (Medium)",
-        "name_ar": "بيتزا شاورما دجاج وسط",
-        "description": "Pizza topped with chicken shawarma.",
-        "description_ar": "بيتزا مغطاة بشاورما الدجاج.",
+        "name": "Chicken Shawarma Pizza",
+        "name_ar": "بيتزا شاورما دجاج",
+        "description": "",
+        "description_ar": "",
         "price": 1000,
-        "options": [],
+        "options": [
+          {
+            "name": "Medium",
+            "name_ar": "وسط",
+            "price": 1000
+          },
+          {
+            "name": "Large",
+            "name_ar": "كبير",
+            "price": 1400
+          }
+        ],
         "image": ""
       },
       {
-        "name": "Beef Shawarma Pizza (Medium)",
-        "name_ar": "بيتزا شاورما لحم وسط",
-        "description": "Pizza topped with beef shawarma.",
-        "description_ar": "بيتزا مغطاة بشاورما اللحم.",
+        "name": "Beef Shawarma Pizza",
+        "name_ar": "بيتزا شاورما لحم",
+        "description": "",
+        "description_ar": "",
         "price": 1100,
-        "options": [],
+        "options": [
+          {
+            "name": "Medium",
+            "name_ar": "وسط",
+            "price": 1100
+          },
+          {
+            "name": "Large",
+            "name_ar": "كبير",
+            "price": 1600
+          }
+        ],
         "image": ""
       },
       {
-        "name": "Margharita Pizza (Medium)",
-        "name_ar": "بيتزا مارغريتا وسط",
-        "description": "Classic cheese and tomato pizza.",
-        "description_ar": "بيتزا كلاسيكية بالجبنة والطماطم.",
+        "name": "Margharita Pizza",
+        "name_ar": "بيتزا مارغريتا",
+        "description": "",
+        "description_ar": "",
         "price": 900,
-        "options": [],
+        "options": [
+          {
+            "name": "Medium",
+            "name_ar": "وسط",
+            "price": 900
+          },
+          {
+            "name": "Large",
+            "name_ar": "كبير",
+            "price": 1200
+          }
+        ],
         "image": ""
       },
       {
-        "name": "Sausage Pizza (Medium)",
-        "name_ar": "بيتزا سجق وسط",
+        "name": "Sausage Pizza",
+        "name_ar": "بيتزا سجق",
         "description": "Pizza topped with sausage.",
         "description_ar": "بيتزا مغطاة بالسجق.",
         "price": 1000,
-        "options": [],
+        "options": [
+          {
+            "name": "Medium",
+            "name_ar": "وسط",
+            "price": 1000
+          },
+          {
+            "name": "Large",
+            "name_ar": "كبير",
+            "price": 1400
+          }
+        ],
         "image": ""
       },
       {
-        "name": "Vegetable Pizza (Medium)",
-        "name_ar": "بيتزا خضار وسط",
-        "description": "Pizza topped with assorted vegetables.",
-        "description_ar": "بيتزا مغطاة بخضار متنوعة.",
+        "name": "Vegetable Pizza",
+        "name_ar": "بيتزا خضار",
+        "description": "",
+        "description_ar": "",
         "price": 900,
-        "options": [],
+        "options": [
+          {
+            "name": "Medium",
+            "name_ar": "وسط",
+            "price": 900
+          },
+          {
+            "name": "Large",
+            "name_ar": "كبير",
+            "price": 1200
+          }
+        ],
         "image": ""
       }
     ]
@@ -386,23 +500,1278 @@
   "dessert": {
     "heroImage": "",
     "name": "Dessert",
-    "name_ar": "حلويات",
+    "name_ar": "الحلويات",
     "items": [
       {
         "name": "Bhaklawa (4 Pieces)",
-        "name_ar": "بقلاوة (٤ قطع)",
-        "description": "Layers of buttery, crisp filo dough stuffed with a rich pistachio filling, baked to golden perfection and drenched in our house-made honey and rose water syrup.",
-        "description_ar": "طبقات من عجينة الفيلو الزبدية المقرمشة محشوة بحشوة الفستق الغنية، مخبوزة حتى الكمال الذهبي ومنقوعة في شرابنا المنزلي المصنوع من العسل وماء الورد.",
+        "name_ar": "بقلاوة (4 قطع)",
+        "description": "Layers of buttery, crisp filo dough stuffed with a rich pistachio filling, baked to golden perfection and drenched in our house-made sugar syrup.",
+        "description_ar": "طبقات من عجينة الفيلو الزبدية والمقرمشة محشوة بحشوة فستق غنية، مخبوزة إلى الكمال الذهبي ومنقوعة في شراب السكر المصنوع في بيتنا.",
         "price": 600,
         "options": [],
         "image": ""
       },
       {
         "name": "Bhaklawa (1 KG)",
-        "name_ar": "بقلاوة (١ كيلو)",
-        "description": "1 kilogram of our signature baklava with pistachio filling and syrup.",
-        "description_ar": "١ كيلوغرام من البقلاوة المميزة لدينا بحشوة الفستق والشراب.",
+        "name_ar": "بقلاوة (1 كيلو)",
+        "description": "",
+        "description_ar": "",
         "price": 5500,
+        "options": [],
+        "image": ""
+      }
+    ]
+  },
+  "coffee_classics": {
+    "heroImage": "",
+    "name": "Coffee Classics",
+    "name_ar": "القهوة الكلاسيكية",
+    "items": [
+      {
+        "name": "Espresso",
+        "name_ar": "إسبريسو",
+        "description": "",
+        "description_ar": "",
+        "price": 180,
+        "options": [
+          {
+            "name": "Single",
+            "name_ar": "فردي",
+            "price": 180
+          },
+          {
+            "name": "Double",
+            "name_ar": "مزدوج",
+            "price": 240
+          }
+        ],
+        "image": ""
+      },
+      {
+        "name": "Espresso Macchiato",
+        "name_ar": "إسبريسو ماكياتو",
+        "description": "",
+        "description_ar": "",
+        "modifiers": {
+          "milk_alternatives": {
+            "name": "Milk Alternatives",
+            "name_ar": "بدائل الحليب",
+            "required": false,
+            "maxSelections": 1,
+            "options": [
+              {
+                "name": "Almond Milk",
+                "name_ar": "حليب لوز",
+                "price": 100
+              },
+              {
+                "name": "Soy Milk",
+                "name_ar": "حليب صويا",
+                "price": 100
+              },
+              {
+                "name": "Oat Milk",
+                "name_ar": "حليب شوفان",
+                "price": 100
+              }
+            ]
+          }
+        },
+        "price": 200,
+        "options": [
+          {
+            "name": "Single",
+            "name_ar": "فردي",
+            "price": 200
+          },
+          {
+            "name": "Double",
+            "name_ar": "مزدوج",
+            "price": 250
+          }
+        ],
+        "image": ""
+      },
+      {
+        "name": "Americano",
+        "name_ar": "أمريكانو",
+        "description": "",
+        "description_ar": "",
+        "price": 250,
+        "options": [
+          {
+            "name": "Single",
+            "name_ar": "فردي",
+            "price": 250
+          },
+          {
+            "name": "Double",
+            "name_ar": "مزدوج",
+            "price": 270
+          },
+          {
+            "name": "Iced",
+            "name_ar": "مثلج",
+            "price": 390
+          }
+        ],
+        "image": ""
+      },
+      {
+        "name": "Café Latte",
+        "name_ar": "لاتيه",
+        "description": "",
+        "description_ar": "",
+        "price": 280,
+        "modifiers": {
+          "milk_alternatives": {
+            "name": "Milk Alternatives",
+            "name_ar": "بدائل الحليب",
+            "required": false,
+            "maxSelections": 1,
+            "options": [
+              {
+                "name": "Almond Milk",
+                "name_ar": "حليب لوز",
+                "price": 100
+              },
+              {
+                "name": "Soy Milk",
+                "name_ar": "حليب صويا",
+                "price": 100
+              },
+              {
+                "name": "Oat Milk",
+                "name_ar": "حليب شوفان",
+                "price": 100
+              }
+            ]
+          }
+        },
+        "options": [
+          {
+            "name": "Single",
+            "name_ar": "فردي",
+            "price": 280
+          },
+          {
+            "name": "Double",
+            "name_ar": "مزدوج",
+            "price": 350
+          },
+          {
+            "name": "Iced",
+            "name_ar": "مثلج",
+            "price": 400
+          }
+        ],
+        "image": ""
+      },
+      {
+        "name": "Latte Macchiato",
+        "name_ar": "لاتيه ماكياتو",
+        "description": "",
+        "description_ar": "",
+        "price": 270,
+        "modifiers": {
+          "milk_alternatives": {
+            "name": "Milk Alternatives",
+            "name_ar": "بدائل الحليب",
+            "required": false,
+            "maxSelections": 1,
+            "options": [
+              {
+                "name": "Almond Milk",
+                "name_ar": "حليب لوز",
+                "price": 100
+              },
+              {
+                "name": "Soy Milk",
+                "name_ar": "حليب صويا",
+                "price": 100
+              },
+              {
+                "name": "Oat Milk",
+                "name_ar": "حليب شوفان",
+                "price": 100
+              }
+            ]
+          }
+        },
+        "options": [
+          {
+            "name": "Single",
+            "name_ar": "فردي",
+            "price": 270
+          },
+          {
+            "name": "Double",
+            "name_ar": "مزدوج",
+            "price": 310
+          },
+          {
+            "name": "Iced",
+            "name_ar": "مثلج",
+            "price": 400
+          }
+        ],
+        "image": ""
+      },
+      {
+        "name": "Cappuccino",
+        "name_ar": "كابتشينو",
+        "description": "",
+        "description_ar": "",
+        "price": 270,
+        "modifiers": {
+          "milk_alternatives": {
+            "name": "Milk Alternatives",
+            "name_ar": "بدائل الحليب",
+            "required": false,
+            "maxSelections": 1,
+            "options": [
+              {
+                "name": "Almond Milk",
+                "name_ar": "حليب لوز",
+                "price": 100
+              },
+              {
+                "name": "Soy Milk",
+                "name_ar": "حليب صويا",
+                "price": 100
+              },
+              {
+                "name": "Oat Milk",
+                "name_ar": "حليب شوفان",
+                "price": 100
+              }
+            ]
+          }
+        },
+        "options": [
+          {
+            "name": "Single",
+            "name_ar": "فردي",
+            "price": 270
+          },
+          {
+            "name": "Double",
+            "name_ar": "مزدوج",
+            "price": 330
+          },
+          {
+            "name": "Iced",
+            "name_ar": "مثلج",
+            "price": 400
+          }
+        ],
+        "image": ""
+      },
+      {
+        "name": "Vanilla Latte",
+        "name_ar": "فانيليا لاتيه",
+        "description": "",
+        "description_ar": "",
+        "price": 300,
+        "modifiers": {
+          "milk_alternatives": {
+            "name": "Milk Alternatives",
+            "name_ar": "بدائل الحليب",
+            "required": false,
+            "maxSelections": 1,
+            "options": [
+              {
+                "name": "Almond Milk",
+                "name_ar": "حليب لوز",
+                "price": 100
+              },
+              {
+                "name": "Soy Milk",
+                "name_ar": "حليب صويا",
+                "price": 100
+              },
+              {
+                "name": "Oat Milk",
+                "name_ar": "حليب شوفان",
+                "price": 100
+              }
+            ]
+          }
+        },
+        "options": [
+          {
+            "name": "Single",
+            "name_ar": "فردي",
+            "price": 300
+          },
+          {
+            "name": "Double",
+            "name_ar": "مزدوج",
+            "price": 350
+          },
+          {
+            "name": "Iced",
+            "name_ar": "مثلج",
+            "price": 450
+          }
+        ],
+        "image": ""
+      },
+      {
+        "name": "Caramel Latte",
+        "name_ar": "كاراميل لاتيه",
+        "description": "",
+        "description_ar": "",
+        "price": 300,
+        "modifiers": {
+          "milk_alternatives": {
+            "name": "Milk Alternatives",
+            "name_ar": "بدائل الحليب",
+            "required": false,
+            "maxSelections": 1,
+            "options": [
+              {
+                "name": "Almond Milk",
+                "name_ar": "حليب لوز",
+                "price": 100
+              },
+              {
+                "name": "Soy Milk",
+                "name_ar": "حليب صويا",
+                "price": 100
+              },
+              {
+                "name": "Oat Milk",
+                "name_ar": "حليب شوفان",
+                "price": 100
+              }
+            ]
+          }
+        },
+        "options": [
+          {
+            "name": "Single",
+            "name_ar": "فردي",
+            "price": 300
+          },
+          {
+            "name": "Double",
+            "name_ar": "مزدوج",
+            "price": 350
+          },
+          {
+            "name": "Iced",
+            "name_ar": "مثلج",
+            "price": 450
+          }
+        ],
+        "image": ""
+      },
+      {
+        "name": "Hazelnut Latte",
+        "name_ar": "بندق لاتيه",
+        "description": "",
+        "description_ar": "",
+        "price": 320,
+        "modifiers": {
+          "milk_alternatives": {
+            "name": "Milk Alternatives",
+            "name_ar": "بدائل الحليب",
+            "required": false,
+            "maxSelections": 1,
+            "options": [
+              {
+                "name": "Almond Milk",
+                "name_ar": "حليب لوز",
+                "price": 100
+              },
+              {
+                "name": "Soy Milk",
+                "name_ar": "حليب صويا",
+                "price": 100
+              },
+              {
+                "name": "Oat Milk",
+                "name_ar": "حليب شوفان",
+                "price": 100
+              }
+            ]
+          }
+        },
+        "options": [
+          {
+            "name": "Single",
+            "name_ar": "فردي",
+            "price": 320
+          },
+          {
+            "name": "Double",
+            "name_ar": "مزدوج",
+            "price": 370
+          },
+          {
+            "name": "Iced",
+            "name_ar": "مثلج",
+            "price": 450
+          }
+        ],
+        "image": ""
+      },
+      {
+        "name": "Matcha Latte",
+        "name_ar": "ماتشا لاتيه",
+        "description": "",
+        "description_ar": "",
+        "price": 400,
+        "modifiers": {
+          "milk_alternatives": {
+            "name": "Milk Alternatives",
+            "name_ar": "بدائل الحليب",
+            "required": false,
+            "maxSelections": 1,
+            "options": [
+              {
+                "name": "Almond Milk",
+                "name_ar": "حليب لوز",
+                "price": 100
+              },
+              {
+                "name": "Soy Milk",
+                "name_ar": "حليب صويا",
+                "price": 100
+              },
+              {
+                "name": "Oat Milk",
+                "name_ar": "حليب شوفان",
+                "price": 100
+              }
+            ]
+          }
+        },
+        "options": [
+          {
+            "name": "Double",
+            "name_ar": "مزدوج",
+            "price": 400
+          },
+          {
+            "name": "Iced",
+            "name_ar": "مثلج",
+            "price": 450
+          }
+        ],
+        "image": ""
+      },
+      {
+        "name": "Flat White",
+        "name_ar": "فلات وايت",
+        "description": "",
+        "description_ar": "",
+        "price": 280,
+        "modifiers": {
+          "milk_alternatives": {
+            "name": "Milk Alternatives",
+            "name_ar": "بدائل الحليب",
+            "required": false,
+            "maxSelections": 1,
+            "options": [
+              {
+                "name": "Almond Milk",
+                "name_ar": "حليب لوز",
+                "price": 100
+              },
+              {
+                "name": "Soy Milk",
+                "name_ar": "حليب صويا",
+                "price": 100
+              },
+              {
+                "name": "Oat Milk",
+                "name_ar": "حليب شوفان",
+                "price": 100
+              }
+            ]
+          }
+        },
+        "options": [
+          {
+            "name": "Double",
+            "name_ar": "مزدوج",
+            "price": 280
+          }
+        ],
+        "image": ""
+      },
+      {
+        "name": "Cortado",
+        "name_ar": "كورتادو",
+        "description": "",
+        "description_ar": "",
+        "price": 280,
+        "modifiers": {
+          "milk_alternatives": {
+            "name": "Milk Alternatives",
+            "name_ar": "بدائل الحليب",
+            "required": false,
+            "maxSelections": 1,
+            "options": [
+              {
+                "name": "Almond Milk",
+                "name_ar": "حليب لوز",
+                "price": 100
+              },
+              {
+                "name": "Soy Milk",
+                "name_ar": "حليب صويا",
+                "price": 100
+              },
+              {
+                "name": "Oat Milk",
+                "name_ar": "حليب شوفان",
+                "price": 100
+              }
+            ]
+          }
+        },
+        "options": [
+          {
+            "name": "Double",
+            "name_ar": "مزدوج",
+            "price": 280
+          }
+        ],
+        "image": ""
+      },
+      {
+        "name": "Mocha",
+        "name_ar": "موكا",
+        "description": "",
+        "description_ar": "",
+        "price": 350,
+        "modifiers": {
+          "milk_alternatives": {
+            "name": "Milk Alternatives",
+            "name_ar": "بدائل الحليب",
+            "required": false,
+            "maxSelections": 1,
+            "options": [
+              {
+                "name": "Almond Milk",
+                "name_ar": "حليب لوز",
+                "price": 100
+              },
+              {
+                "name": "Soy Milk",
+                "name_ar": "حليب صويا",
+                "price": 100
+              },
+              {
+                "name": "Oat Milk",
+                "name_ar": "حليب شوفان",
+                "price": 100
+              }
+            ]
+          }
+        },
+        "options": [
+          {
+            "name": "Double",
+            "name_ar": "مزدوج",
+            "price": 350
+          },
+          {
+            "name": "Iced",
+            "name_ar": "مثلج",
+            "price": 450
+          }
+        ],
+        "image": ""
+      },
+      {
+        "name": "Spanish Latte",
+        "name_ar": "لاتيه إسباني",
+        "description": "",
+        "description_ar": "",
+        "price": 350,
+        "modifiers": {
+          "milk_alternatives": {
+            "name": "Milk Alternatives",
+            "name_ar": "بدائل الحليب",
+            "required": false,
+            "maxSelections": 1,
+            "options": [
+              {
+                "name": "Almond Milk",
+                "name_ar": "حليب لوز",
+                "price": 100
+              },
+              {
+                "name": "Soy Milk",
+                "name_ar": "حليب صويا",
+                "price": 100
+              },
+              {
+                "name": "Oat Milk",
+                "name_ar": "حليب شوفان",
+                "price": 100
+              }
+            ]
+          }
+        },
+        "options": [
+          {
+            "name": "Double",
+            "name_ar": "مزدوج",
+            "price": 350
+          },
+          {
+            "name": "Iced",
+            "name_ar": "مثلج",
+            "price": 400
+          }
+        ],
+        "image": ""
+      }
+    ]
+  },
+  "tea": {
+    "heroImage": "",
+    "name": "Tea",
+    "name_ar": "شاي",
+    "items": [
+      {
+        "name": "Kenyan Tea",
+        "name_ar": "شاي كيني",
+        "description": "",
+        "description_ar": "",
+        "price": 280,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Masala Tea",
+        "name_ar": "شاي ماسالا",
+        "description": "",
+        "description_ar": "",
+        "price": 330,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Ginger Tea",
+        "name_ar": "شاي زنجبيل",
+        "description": "",
+        "description_ar": "",
+        "price": 330,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Black Tea",
+        "name_ar": "شاي أسود",
+        "description": "",
+        "description_ar": "",
+        "price": 250,
+        "options": [],
+        "image": ""
+      }
+    ]
+  },
+  "iced_tea": {
+    "heroImage": "",
+    "name": "Iced Tea",
+    "name_ar": "شاي مثلج",
+    "items": [
+      {
+        "name": "Lemon Iced Tea",
+        "name_ar": "شاي مثلج بالليمون",
+        "description": "",
+        "description_ar": "",
+        "price": 390,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Peach Iced Tea",
+        "name_ar": "شاي مثلج بالخوخ",
+        "description": "",
+        "description_ar": "",
+        "price": 390,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Mango Iced Tea",
+        "name_ar": "شاي مثلج بالمانجو",
+        "description": "",
+        "description_ar": "",
+        "price": 390,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Passion Iced Tea",
+        "name_ar": "شاي مثلج بالباشن فروت",
+        "description": "",
+        "description_ar": "",
+        "price": 390,
+        "options": [],
+        "image": ""
+      }
+    ]
+  },
+  "herbal_tea": {
+    "heroImage": "",
+    "name": "Herbal Tea",
+    "name_ar": "شاي أعشاب",
+    "items": [
+      {
+        "name": "Camoomile Tea",
+        "name_ar": "شاي بابونج",
+        "description": "",
+        "description_ar": "",
+        "price": 400,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Green Tea",
+        "name_ar": "شاي أخضر",
+        "description": "",
+        "description_ar": "",
+        "price": 400,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Rooibos Tea",
+        "name_ar": "شاي رويبوس",
+        "description": "",
+        "description_ar": "",
+        "price": 400,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Nana Mint Tea",
+        "name_ar": "شاي نعناع",
+        "description": "",
+        "description_ar": "",
+        "price": 350,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Dawa Tea",
+        "name_ar": "شاي دوا",
+        "description": "Lemon, Ginger, Honey",
+        "description_ar": "ليمون، زنجبيل، عسل",
+        "price": 350,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Damascus Signature Dawa Tea",
+        "name_ar": "شاي دوا دمشق الخاص",
+        "description": "",
+        "description_ar": "",
+        "price": 400,
+        "options": [],
+        "image": ""
+      }
+    ]
+  },
+  "milkshakes": {
+    "heroImage": "",
+    "name": "Milkshakes",
+    "name_ar": "ميلك شيك",
+    "items": [
+      {
+        "name": "Vanilla Shake",
+        "name_ar": "ميلك شيك فانيليا",
+        "description": "Vanilla syrup, milk, ice cream",
+        "description_ar": "شراب فانيليا، حليب، آيس كريم",
+        "price": 550,
+        "modifiers": {
+          "milk_alternatives": {
+            "name": "Milk Alternatives",
+            "name_ar": "بدائل الحليب",
+            "required": false,
+            "maxSelections": 1,
+            "options": [
+              {
+                "name": "Almond Milk",
+                "name_ar": "حليب لوز",
+                "price": 100
+              },
+              {
+                "name": "Soy Milk",
+                "name_ar": "حليب صويا",
+                "price": 100
+              },
+              {
+                "name": "Oat Milk",
+                "name_ar": "حليب شوفان",
+                "price": 100
+              }
+            ]
+          }
+        },
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Chocolate Shake",
+        "name_ar": "ميلك شيك شوكولاتة",
+        "description": "Chocolate sauce, milk, vanilla ice cream",
+        "description_ar": "صلصة شوكولاتة، حليب، آيس كريم فانيليا",
+        "price": 550,
+        "modifiers": {
+          "milk_alternatives": {
+            "name": "Milk Alternatives",
+            "name_ar": "بدائل الحليب",
+            "required": false,
+            "maxSelections": 1,
+            "options": [
+              {
+                "name": "Almond Milk",
+                "name_ar": "حليب لوز",
+                "price": 100
+              },
+              {
+                "name": "Soy Milk",
+                "name_ar": "حليب صويا",
+                "price": 100
+              },
+              {
+                "name": "Oat Milk",
+                "name_ar": "حليب شوفان",
+                "price": 100
+              }
+            ]
+          }
+        },
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Strawberry Shake",
+        "name_ar": "ميلك شيك فراولة",
+        "description": "Fresh strawberries, strawberry syrup, milk, vanilla ice cream",
+        "description_ar": "فراولة طازجة، شراب فراولة، حليب، آيس كريم فانيليا",
+        "price": 550,
+        "modifiers": {
+          "milk_alternatives": {
+            "name": "Milk Alternatives",
+            "name_ar": "بدائل الحليب",
+            "required": false,
+            "maxSelections": 1,
+            "options": [
+              {
+                "name": "Almond Milk",
+                "name_ar": "حليب لوز",
+                "price": 100
+              },
+              {
+                "name": "Soy Milk",
+                "name_ar": "حليب صويا",
+                "price": 100
+              },
+              {
+                "name": "Oat Milk",
+                "name_ar": "حليب شوفان",
+                "price": 100
+              }
+            ]
+          }
+        },
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Oreo and Vanilla Shake",
+        "name_ar": "ميلك شيك أوريو وفانيليا",
+        "description": "Oreo cookies, vanilla syrup, milk, vanilla ice cream",
+        "description_ar": "بسكويت أوريو، شراب فانيليا، حليب، آيس كريم فانيليا",
+        "price": 550,
+        "modifiers": {
+          "milk_alternatives": {
+            "name": "Milk Alternatives",
+            "name_ar": "بدائل الحليب",
+            "required": false,
+            "maxSelections": 1,
+            "options": [
+              {
+                "name": "Almond Milk",
+                "name_ar": "حليب لوز",
+                "price": 100
+              },
+              {
+                "name": "Soy Milk",
+                "name_ar": "حليب صويا",
+                "price": 100
+              },
+              {
+                "name": "Oat Milk",
+                "name_ar": "حليب شوفان",
+                "price": 100
+              }
+            ]
+          }
+        },
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Chocolate Coffee Shake",
+        "name_ar": "ميلك شيك شوكولاتة وقهوة",
+        "description": "Espresso, chocolate sauce, milk, vanilla ice cream",
+        "description_ar": "إسبريسو، صلصة شوكولاتة، حليب، آيس كريم فانيليا",
+        "price": 550,
+        "modifiers": {
+          "milk_alternatives": {
+            "name": "Milk Alternatives",
+            "name_ar": "بدائل الحليب",
+            "required": false,
+            "maxSelections": 1,
+            "options": [
+              {
+                "name": "Almond Milk",
+                "name_ar": "حليب لوز",
+                "price": 100
+              },
+              {
+                "name": "Soy Milk",
+                "name_ar": "حليب صويا",
+                "price": 100
+              },
+              {
+                "name": "Oat Milk",
+                "name_ar": "حليب شوفان",
+                "price": 100
+              }
+            ]
+          }
+        },
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Caramel Shake",
+        "name_ar": "ميلك شيك كاراميل",
+        "description": "Caramel syrup, milk, ice cream",
+        "description_ar": "شراب كاراميل، حليب، آيس كريم",
+        "price": 550,
+        "modifiers": {
+          "milk_alternatives": {
+            "name": "Milk Alternatives",
+            "name_ar": "بدائل الحليب",
+            "required": false,
+            "maxSelections": 1,
+            "options": [
+              {
+                "name": "Almond Milk",
+                "name_ar": "حليب لوز",
+                "price": 100
+              },
+              {
+                "name": "Soy Milk",
+                "name_ar": "حليب صويا",
+                "price": 100
+              },
+              {
+                "name": "Oat Milk",
+                "name_ar": "حليب شوفان",
+                "price": 100
+              }
+            ]
+          }
+        },
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Banana Nutella Shake",
+        "name_ar": "ميلك شيك موز ونوتيلا",
+        "description": "Nutella, maple syrup, almond milk, banana, vanilla ice cream",
+        "description_ar": "نوتيلا، شراب القيقب، حليب لوز، موز، آيس كريم فانيليا",
+        "price": 550,
+        "modifiers": {
+          "milk_alternatives": {
+            "name": "Milk Alternatives",
+            "name_ar": "بدائل الحليب",
+            "required": false,
+            "maxSelections": 1,
+            "options": [
+              {
+                "name": "Almond Milk",
+                "name_ar": "حليب لوز",
+                "price": 100
+              },
+              {
+                "name": "Soy Milk",
+                "name_ar": "حليب صويا",
+                "price": 100
+              },
+              {
+                "name": "Oat Milk",
+                "name_ar": "حليب شوفان",
+                "price": 100
+              }
+            ]
+          }
+        },
+        "options": [],
+        "image": ""
+      }
+    ]
+  },
+  "smoothies": {
+    "heroImage": "",
+    "name": "Smoothies",
+    "name_ar": "سموذي",
+    "items": [
+      {
+        "name": "Super Green Smoothie",
+        "name_ar": "سموذي أخضر سوبر",
+        "description": "Honey, moringa powder, avocado, cucumber, spinach, apples",
+        "description_ar": "عسل، مسحوق المورينجا، أفوكادو، خيار، سبانخ، تفاح",
+        "price": 570,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Carrot Papaya Smoothie",
+        "name_ar": "سموذي جزر وبابايا",
+        "description": "Carrots, papaya, ginger, orange",
+        "description_ar": "جزر، بابايا، زنجبيل، برتقال",
+        "price": 570,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Fruit Fit Smoothie",
+        "name_ar": "سموذي فواكه فيت",
+        "description": "Strawberry, banana, mango, yoghurt, honey",
+        "description_ar": "فراولة، موز، مانجو، لبن، عسل",
+        "price": 570,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Avocado Beetroot Smoothie",
+        "name_ar": "سموذي أفوكادو وشمندر",
+        "description": "Avocado, beetroot, yoghurt, lemon, honey",
+        "description_ar": "أفوكادو، شمندر، لبن، ليمون، عسل",
+        "price": 570,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Green Smoothie",
+        "name_ar": "سموذي أخضر",
+        "description": "Honey, moringa powder, cucumber, spinach, apples",
+        "description_ar": "عسل، مسحوق المورينجا، خيار، سبانخ، تفاح",
+        "price": 570,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Go Better",
+        "name_ar": "جو بيتير",
+        "description": "Banana, beetroot, mint, chocolate powder, almond milk, honey",
+        "description_ar": "موز، شمندر، نعناع، مسحوق شوكولاتة، حليب لوز، عسل",
+        "price": 570,
+        "options": [],
+        "image": ""
+      }
+    ]
+  },
+  "slushies": {
+    "heroImage": "",
+    "name": "Slushies",
+    "name_ar": "سلوشي",
+    "items": [
+      {
+        "name": "Mango Slushie",
+        "name_ar": "سلوشي مانجو",
+        "description": "Mango fruit, sugar syrup, vanilla syrup and lemon juice",
+        "description_ar": "فاكهة مانجو، شراب سكر، شراب فانيليا وعصير ليمون",
+        "price": 500,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Tropical Slushie",
+        "name_ar": "سلوشي استوائي",
+        "description": "Banana, mango, strawberries, pineapples and mint leaves",
+        "description_ar": "موز، مانجو، فراولة، أناناس وأوراق نعناع",
+        "price": 500,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Mixed Berries Slushie",
+        "name_ar": "سلوشي توت مشكل",
+        "description": "Strawberries, red grapes and mixed berry syrup",
+        "description_ar": "فراولة، عنب أحمر وشراب توت مشكل",
+        "price": 500,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Orange, Peach & Mango Slushie",
+        "name_ar": "سلوشي برتقال، خوخ ومانجو",
+        "description": "",
+        "description_ar": "",
+        "price": 500,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Pineapple Slushie",
+        "name_ar": "سلوشي أناناس",
+        "description": "",
+        "description_ar": "",
+        "price": 500,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Strawberry Slushie",
+        "name_ar": "سلوشي فراولة",
+        "description": "",
+        "description_ar": "",
+        "price": 490,
+        "options": [],
+        "image": ""
+      }
+    ]
+  },
+  "fresh_juice": {
+    "heroImage": "",
+    "name": "Fresh Juice",
+    "name_ar": "عصير طازج",
+    "items": [
+      {
+        "name": "Watermelon Juice",
+        "name_ar": "عصير بطيخ",
+        "description": "",
+        "description_ar": "",
+        "price": 500,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Mango Juice",
+        "name_ar": "عصير مانجو",
+        "description": "",
+        "description_ar": "",
+        "price": 500,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Pineapple Juice",
+        "name_ar": "عصير أناناس",
+        "description": "",
+        "description_ar": "",
+        "price": 500,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Apple Juice",
+        "name_ar": "عصير تفاح",
+        "description": "",
+        "description_ar": "",
+        "price": 500,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Orange Juice",
+        "name_ar": "عصير برتقال",
+        "description": "",
+        "description_ar": "",
+        "price": 500,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Passion Juice",
+        "name_ar": "عصير باشن فروت",
+        "description": "",
+        "description_ar": "",
+        "price": 500,
+        "options": [],
+        "image": ""
+      }
+    ]
+  },
+  "mojitos": {
+    "heroImage": "",
+    "name": "Mojitos",
+    "name_ar": "موخيتوس",
+    "items": [
+      {
+        "name": "Passion Mojito",
+        "name_ar": "موخيتو باشن فروت",
+        "description": "",
+        "description_ar": "",
+        "price": 550,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Kiwi Mojito",
+        "name_ar": "موخيتو كيوي",
+        "description": "",
+        "description_ar": "",
+        "price": 550,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Blueberry Mojito",
+        "name_ar": "موخيتو توت أزرق",
+        "description": "",
+        "description_ar": "",
+        "price": 550,
+        "options": [],
+        "image": ""
+      }
+    ]
+  },
+  "lemonade": {
+    "heroImage": "",
+    "name": "Lemonade",
+    "name_ar": "ليمونادة",
+    "items": [
+      {
+        "name": "Blueberry Lemonade",
+        "name_ar": "ليمونادة توت أزرق",
+        "description": "",
+        "description_ar": "",
+        "price": 490,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Classic Lemonade",
+        "name_ar": "ليمونادة كلاسيكية",
+        "description": "",
+        "description_ar": "",
+        "price": 490,
+        "options": [],
+        "image": ""
+      },
+      {
+        "name": "Strawberry Lemonade",
+        "name_ar": "ليمونادة فراولة",
+        "description": "",
+        "description_ar": "",
+        "price": 490,
         "options": [],
         "image": ""
       }

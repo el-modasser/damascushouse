@@ -152,40 +152,107 @@ const getText = (item, field, language) => {
   return item[field] || '';
 };
 
-const getCartItemId = (item, selectedOption = null) => {
+const getCartItemId = (item, selectedOption = null, selectedModifiers = {}) => {
   if (!item) return '';
+
+  let id = item.name;
+
   if (selectedOption && selectedOption.name) {
-    return `${item.name}_${selectedOption.name}`;
+    id += `_${selectedOption.name}`;
   }
-  return item.name;
+
+  // Add modifiers to the ID for uniqueness
+  if (selectedModifiers && Object.keys(selectedModifiers).length > 0) {
+    const modifierKeys = Object.keys(selectedModifiers).sort();
+    modifierKeys.forEach(modifierGroup => {
+      selectedModifiers[modifierGroup].forEach(modifier => {
+        id += `_${modifierGroup}_${modifier}`;
+      });
+    });
+  }
+
+  return id;
 };
 
-const getItemPrice = (item, selectedOption = null) => {
+const getItemPrice = (item, selectedOption = null, selectedModifiers = {}) => {
   if (!item) return 0;
 
+  let price = 0;
+
+  // Base price
+  if (Array.isArray(item.price)) {
+    price = item.price[0] || 0;
+  } else {
+    price = item.price || 0;
+  }
+
+  // Add option price if selected
   if (selectedOption && item.options) {
     const option = item.options.find(opt => opt.name === selectedOption.name);
     if (option) {
-      return option.price;
+      price = option.price;
     }
   }
 
-  if (Array.isArray(item.price)) {
-    return item.price[0] || 0;
+  // Add modifiers price
+  if (selectedModifiers && Object.keys(selectedModifiers).length > 0 && item.modifiers) {
+    Object.entries(selectedModifiers).forEach(([modifierGroupName, selectedMods]) => {
+      const modifierGroup = item.modifiers[modifierGroupName];
+      if (modifierGroup && modifierGroup.options) {
+        selectedMods.forEach(modifierName => {
+          const modifier = modifierGroup.options.find(opt => opt.name === modifierName);
+          if (modifier) {
+            price += modifier.price;
+          }
+        });
+      }
+    });
   }
 
-  return item.price || 0;
+  return price;
 };
 
-const getItemDisplayName = (item, selectedOption = null, language) => {
+const getItemDisplayName = (item, selectedOption = null, selectedModifiers = {}, language) => {
   const baseName = getText(item, 'name', language);
+  let displayName = baseName;
 
+  // Add selected option
   if (selectedOption && item.options) {
     const optionText = getText(selectedOption, 'name', language);
-    return `${baseName} (${optionText})`;
+    displayName += ` (${optionText})`;
   }
 
-  return baseName;
+  // Add selected modifiers
+  if (selectedModifiers && Object.keys(selectedModifiers).length > 0 && item.modifiers) {
+    const modifierTexts = [];
+    Object.entries(selectedModifiers).forEach(([modifierGroupName, selectedMods]) => {
+      const modifierGroup = item.modifiers[modifierGroupName];
+      if (modifierGroup) {
+        selectedMods.forEach(modifierName => {
+          const modifier = modifierGroup.options.find(opt => opt.name === modifierName);
+          if (modifier) {
+            modifierTexts.push(getText(modifier, 'name', language));
+          }
+        });
+      }
+    });
+
+    if (modifierTexts.length > 0) {
+      displayName += ` [${modifierTexts.join(', ')}]`;
+    }
+  }
+
+  return displayName;
+};
+
+// Check if option price is different from base price
+const isOptionPriceDifferent = (item, selectedOption) => {
+  if (!item || !selectedOption || !item.options) return false;
+
+  const basePrice = Array.isArray(item.price) ? item.price[0] || 0 : item.price || 0;
+  const optionPrice = getItemPrice(item, selectedOption);
+
+  return optionPrice !== basePrice;
 };
 
 // WhatsApp message composition function
@@ -200,8 +267,8 @@ const composeWhatsAppMessage = (cart, orderNotes, language, currency) => {
   message += `====================\n\n`;
 
   cart.forEach((item, index) => {
-    const itemName = item.displayName || getItemDisplayName(item, item.selectedOption, language);
-    const itemPrice = item.price || getItemPrice(item, item.selectedOption);
+    const itemName = item.displayName || getItemDisplayName(item, item.selectedOption, item.selectedModifiers, language);
+    const itemPrice = item.price || getItemPrice(item, item.selectedOption, item.selectedModifiers);
     const itemTotal = itemPrice * (item.quantity || 1);
 
     message += `${index + 1}. ${itemName}\n`;
@@ -256,6 +323,7 @@ export default function MenuPage() {
   const [selectedItem, setSelectedItem] = useState(null);
   const [selectedItemCategory, setSelectedItemCategory] = useState(null);
   const [selectedItemOption, setSelectedItemOption] = useState(null);
+  const [selectedItemModifiers, setSelectedItemModifiers] = useState({});
   const [isSticky, setIsSticky] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [priceSort, setPriceSort] = useState('default');
@@ -264,9 +332,8 @@ export default function MenuPage() {
   const [orderNotes, setOrderNotes] = useState('');
   const [language, setLanguage] = useState(defaultLanguage);
   const [itemOptions, setItemOptions] = useState({});
+  const [itemModifiers, setItemModifiers] = useState({});
   const [isWhatsAppSending, setIsWhatsAppSending] = useState(false);
-
-  // NEW: Check if order mode is enabled via query parameter
   const [isOrderMode, setIsOrderMode] = useState(false);
 
   // Refs
@@ -284,8 +351,10 @@ export default function MenuPage() {
 
   // Check for order mode on mount
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    setIsOrderMode(params.get('order') === 'true');
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      setIsOrderMode(params.get('order') === 'true');
+    }
   }, []);
 
   // Set document language only
@@ -293,21 +362,40 @@ export default function MenuPage() {
     document.documentElement.lang = language;
   }, [language]);
 
-  // Initialize auto-selected options for items with options
+  // Initialize auto-selected options and modifiers for items
   useEffect(() => {
     if (features.enableProductOptions) {
       const initialOptions = {};
+      const initialModifiers = {};
+
       Object.keys(menuData).forEach(categoryId => {
         const categoryData = menuData[categoryId];
         if (categoryData && categoryData.items) {
           categoryData.items.forEach(item => {
+            // Initialize options
             if (item.options && item.options.length > 0) {
               initialOptions[item.name] = item.options[0];
+            }
+
+            // Initialize modifiers (if required)
+            if (item.modifiers) {
+              initialModifiers[item.name] = {};
+              Object.entries(item.modifiers).forEach(([modifierGroupName, modifierGroup]) => {
+                if (modifierGroup.required && modifierGroup.options && modifierGroup.options.length > 0) {
+                  // Auto-select first option for required modifiers
+                  initialModifiers[item.name][modifierGroupName] = [modifierGroup.options[0].name];
+                } else {
+                  // Initialize as empty array for optional modifiers
+                  initialModifiers[item.name][modifierGroupName] = [];
+                }
+              });
             }
           });
         }
       });
+
       setItemOptions(initialOptions);
+      setItemModifiers(initialModifiers);
     }
   }, [features.enableProductOptions]);
 
@@ -366,7 +454,7 @@ export default function MenuPage() {
     });
   }, []);
 
-  // Scroll-based active category detection - Much more reliable than Intersection Observer
+  // Scroll-based active category detection
   useEffect(() => {
     if (!layout.stickyCategories) return;
 
@@ -378,38 +466,31 @@ export default function MenuPage() {
       const scrollDirection = scrollTop > lastScrollTopRef.current ? 'down' : 'up';
       lastScrollTopRef.current = scrollTop;
 
-      // Skip if programmatically scrolling
       if (isScrollingRef.current) return;
 
       if (!ticking) {
         scrollAnimationFrameRef.current = requestAnimationFrame(() => {
           updateCategoryPositions();
 
-          // Find which category is currently at the top of the viewport
           const headerHeight = categoriesRef.current ? categoriesRef.current.offsetHeight : 0;
-          const viewportTop = scrollTop + headerHeight + 100; // 100px buffer from top
+          const viewportTop = scrollTop + headerHeight + 100;
 
           let currentCategory = lastActiveCategory;
           let minDistance = Infinity;
 
-          // Find the category whose top is closest to the viewport top
           Object.entries(categoryPositionsRef.current).forEach(([categoryId, position]) => {
             if (!position) return;
 
-            // Calculate distance from category top to viewport top
             const distance = Math.abs(position.top - viewportTop);
 
-            // If we're scrolling down, prioritize categories above the viewport
             if (scrollDirection === 'down') {
               if (position.top <= viewportTop && position.bottom > viewportTop - 100) {
-                // Category is currently visible
                 if (distance < minDistance) {
                   minDistance = distance;
                   currentCategory = categoryId;
                 }
               }
             } else {
-              // Scrolling up
               if (position.top <= viewportTop + 100 && position.bottom > viewportTop - 200) {
                 if (distance < minDistance) {
                   minDistance = distance;
@@ -419,21 +500,18 @@ export default function MenuPage() {
             }
           });
 
-          // Also check if viewport is past the middle of any category
           Object.entries(categoryPositionsRef.current).forEach(([categoryId, position]) => {
             if (!position) return;
 
             const categoryMiddle = position.top + (position.height / 2);
             const distanceToMiddle = Math.abs(categoryMiddle - viewportTop);
 
-            // If viewport is near the middle of this category, make it active
             if (distanceToMiddle < minDistance && distanceToMiddle < 200) {
               minDistance = distanceToMiddle;
               currentCategory = categoryId;
             }
           });
 
-          // Update active category if changed
           if (currentCategory && currentCategory !== lastActiveCategory) {
             lastActiveCategory = currentCategory;
             setActiveCategory(currentCategory);
@@ -446,7 +524,6 @@ export default function MenuPage() {
       }
     };
 
-    // Initial calculation
     setTimeout(updateCategoryPositions, 100);
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -463,7 +540,7 @@ export default function MenuPage() {
     };
   }, [layout.stickyCategories, updateCategoryPositions]);
 
-  // Update positions when categories change (search, etc)
+  // Update positions when categories change
   useEffect(() => {
     setTimeout(updateCategoryPositions, 100);
   }, [searchQuery, updateCategoryPositions]);
@@ -479,11 +556,9 @@ export default function MenuPage() {
     const buttonRect = activeButton.getBoundingClientRect();
     const containerRect = container.getBoundingClientRect();
 
-    // Check if button is not fully visible
     if (buttonRect.left < containerRect.left || buttonRect.right > containerRect.right) {
       const scrollLeft = activeButton.offsetLeft - (container.offsetWidth / 2) + (activeButton.offsetWidth / 2);
 
-      // Use smooth scroll for better UX
       container.scrollTo({
         left: scrollLeft,
         behavior: 'smooth'
@@ -499,7 +574,6 @@ export default function MenuPage() {
     isScrollingRef.current = true;
     setActiveCategory(categoryId);
 
-    // Calculate position with offset for sticky header
     const headerOffset = categoriesRef.current ? categoriesRef.current.offsetHeight + 20 : 100;
     const elementPosition = section.offsetTop;
     const offsetPosition = elementPosition - headerOffset;
@@ -509,11 +583,10 @@ export default function MenuPage() {
       behavior: 'instant'
     });
 
-    // Reset scrolling flag after animation completes
     clearTimeout(scrollTimeoutRef.current);
     scrollTimeoutRef.current = setTimeout(() => {
       isScrollingRef.current = false;
-      updateCategoryPositions(); // Recalculate positions after scroll
+      updateCategoryPositions();
     }, 600);
   }, [updateCategoryPositions]);
 
@@ -561,17 +634,79 @@ export default function MenuPage() {
     }));
   };
 
+  // Handle modifier selection
+  const handleModifierSelect = (itemName, modifierGroupName, modifierOption) => {
+    setItemModifiers(prev => {
+      const itemMods = prev[itemName] || {};
+      const currentSelections = itemMods[modifierGroupName] || [];
+      const modifierGroup = menuData[activeCategory]?.items?.find(item => item.name === itemName)?.modifiers?.[modifierGroupName];
+
+      if (!modifierGroup) return prev;
+
+      const maxSelections = modifierGroup.maxSelections || 1;
+
+      if (currentSelections.includes(modifierOption.name)) {
+        // Remove if already selected
+        const newSelections = currentSelections.filter(name => name !== modifierOption.name);
+        return {
+          ...prev,
+          [itemName]: {
+            ...itemMods,
+            [modifierGroupName]: newSelections
+          }
+        };
+      } else {
+        // Add new selection
+        if (maxSelections === 1) {
+          // Single selection - replace current
+          return {
+            ...prev,
+            [itemName]: {
+              ...itemMods,
+              [modifierGroupName]: [modifierOption.name]
+            }
+          };
+        } else {
+          // Multiple selections - add if not at max
+          if (currentSelections.length < maxSelections) {
+            return {
+              ...prev,
+              [itemName]: {
+                ...itemMods,
+                [modifierGroupName]: [...currentSelections, modifierOption.name]
+              }
+            };
+          }
+        }
+      }
+
+      return prev;
+    });
+  };
+
+  // Check if modifier is selected
+  const isModifierSelected = (itemName, modifierGroupName, modifierOptionName) => {
+    const itemMods = itemModifiers[itemName] || {};
+    const groupSelections = itemMods[modifierGroupName] || [];
+    return groupSelections.includes(modifierOptionName);
+  };
+
   // Get selected option for an item
   const getSelectedOption = (itemName) => {
     return itemOptions[itemName] || null;
   };
 
-  // Cart functions (only if order mode is enabled)
-  const addToCart = (item, quantity = 1, selectedOption = null) => {
+  // Get selected modifiers for an item
+  const getSelectedModifiers = (itemName) => {
+    return itemModifiers[itemName] || {};
+  };
+
+  // Cart functions
+  const addToCart = (item, quantity = 1, selectedOption = null, selectedModifiers = {}) => {
     if (!features.enableCart || !item || !isOrderMode) return;
 
-    const cartPrice = getItemPrice(item, selectedOption);
-    const cartItemId = getCartItemId(item, selectedOption);
+    const cartPrice = getItemPrice(item, selectedOption, selectedModifiers);
+    const cartItemId = getCartItemId(item, selectedOption, selectedModifiers);
 
     setCart(prev => {
       const existing = prev.find(cartItem => cartItem.id === cartItemId);
@@ -588,7 +723,8 @@ export default function MenuPage() {
         price: cartPrice,
         quantity,
         selectedOption,
-        displayName: getItemDisplayName(item, selectedOption, language)
+        selectedModifiers,
+        displayName: getItemDisplayName(item, selectedOption, selectedModifiers, language)
       }];
     });
 
@@ -596,6 +732,13 @@ export default function MenuPage() {
       setItemOptions(prev => ({
         ...prev,
         [item.name]: selectedOption
+      }));
+    }
+
+    if (selectedModifiers && Object.keys(selectedModifiers).length > 0) {
+      setItemModifiers(prev => ({
+        ...prev,
+        [item.name]: selectedModifiers
       }));
     }
   };
@@ -632,6 +775,8 @@ export default function MenuPage() {
     setSelectedItemCategory(categoryId);
     const currentOption = getSelectedOption(item.name);
     setSelectedItemOption(currentOption);
+    const currentModifiers = getSelectedModifiers(item.name);
+    setSelectedItemModifiers(currentModifiers);
     setIsItemModalOpen(true);
   };
 
@@ -641,22 +786,14 @@ export default function MenuPage() {
 
     setIsWhatsAppSending(true);
 
-    // Compose the message
     const message = composeWhatsAppMessage(cart, orderNotes, language, currency);
-
-    // Format the phone number (remove any non-digit characters except +)
     const phoneNumber = contact.whatsappNumber.replace(/\s/g, '');
-
-    // Create WhatsApp URL
     const whatsappUrl = `https://wa.me/${phoneNumber.replace('+', '')}?text=${message}`;
 
-    // Open WhatsApp in a new tab
     window.open(whatsappUrl, '_blank');
 
-    // Reset sending state after a short delay
     setTimeout(() => {
       setIsWhatsAppSending(false);
-      // Optionally close the cart modal
       setIsCartOpen(false);
     }, 1000);
   };
@@ -786,7 +923,6 @@ export default function MenuPage() {
         {Object.keys(menuData).map((categoryId) => {
           const filteredItems = getFilteredAndSortedItems(categoryId);
 
-          // Don't render empty categories when searching
           if (features.enableSearch && searchQuery && filteredItems.length === 0) {
             return null;
           }
@@ -827,9 +963,12 @@ export default function MenuPage() {
                     if (!item) return null;
 
                     const selectedOption = getSelectedOption(item.name);
-                    const itemPrice = getItemPrice(item, selectedOption);
-                    const cartItemId = getCartItemId(item, selectedOption);
+                    const selectedModifiers = getSelectedModifiers(item.name);
+                    const itemPrice = getItemPrice(item, selectedOption, selectedModifiers);
+                    const basePrice = Array.isArray(item.price) ? item.price[0] || 0 : item.price || 0;
+                    const cartItemId = getCartItemId(item, selectedOption, selectedModifiers);
                     const cartQuantity = cart.find(ci => ci.id === cartItemId)?.quantity || 0;
+                    const isPriceDifferent = isOptionPriceDifferent(item, selectedOption);
 
                     return (
                       <motion.div
@@ -869,7 +1008,10 @@ export default function MenuPage() {
                               {getText(item, 'name', language)}
                               {selectedOption && (
                                 <span style={optionBadgeStyles}>
-                                  {selectedOption.name}
+                                  {language === 'en' ? selectedOption.name : selectedOption.name_ar}
+                                  {/* {selectedOption.name} */}
+                                  {getText(item.option, 'name', language)}
+
                                 </span>
                               )}
                             </h3>
@@ -884,14 +1026,14 @@ export default function MenuPage() {
                             </p>
                           )}
 
-                          {/* Product Options - Only in order mode */}
-                          {isOrderMode && features.enableProductOptions && item.options && item.options.length > 0 && (
+                          {/* Product Options - Show in both order and non-order modes */}
+                          {features.enableProductOptions && item.options && item.options.length > 0 && (
                             <div style={optionsContainerStyles}>
                               <div style={{
                                 ...optionsLabelStyles,
                                 textAlign: language === 'ar' ? 'right' : 'left'
                               }}>
-                                {language === 'en' ? 'Select option:' : 'اختر الخيار:'}
+                                {language === 'en' ? 'Options:' : 'الخيارات:'}
                               </div>
                               <div style={optionsListStyles}>
                                 {item.options.map((option) => (
@@ -913,11 +1055,71 @@ export default function MenuPage() {
                                       {getText(option, 'name', language)}
                                     </span>
                                     <span style={optionPriceStyles}>
-                                      +{currency.symbolEn} {option.price.toLocaleString(currency.format)}
+                                      {/* {option.price !== basePrice && '+'} */}
+                                      {currency.symbolEn} {option.price.toLocaleString(currency.format)}
                                     </span>
                                   </button>
                                 ))}
                               </div>
+                            </div>
+                          )}
+
+                          {/* Modifiers - Show in both order and non-order modes */}
+                          {item.modifiers && Object.keys(item.modifiers).length > 0 && (
+                            <div style={modifiersContainerStyles}>
+                              {Object.entries(item.modifiers).map(([modifierGroupName, modifierGroup]) => (
+                                <div key={modifierGroupName} style={modifierGroupStyles}>
+                                  <div style={{
+                                    ...modifierGroupLabelStyles,
+                                    textAlign: language === 'ar' ? 'right' : 'left'
+                                  }}>
+                                    {getText(modifierGroup, 'name', language)}
+                                    {modifierGroup.required && (
+                                      <span style={requiredBadgeStyles}>
+                                        {language === 'en' ? ' (Required)' : ' (مطلوب)'}
+                                      </span>
+                                    )}
+                                    <span style={modifierMaxSelectionsStyles}>
+                                      {language === 'en' ? ` (Max ${modifierGroup.maxSelections || 1})` : ` (الحد الأقصى ${modifierGroup.maxSelections || 1})`}
+                                    </span>
+                                  </div>
+                                  <div style={modifierOptionsListStyles}>
+                                    {modifierGroup.options && modifierGroup.options.map((modifier) => (
+                                      <div
+                                        key={modifier.name}
+                                        style={modifierOptionContainerStyles}
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          handleModifierSelect(item.name, modifierGroupName, modifier);
+                                        }}
+                                      >
+                                        <div style={{
+                                          ...modifierCheckboxStyles,
+                                          backgroundColor: isModifierSelected(item.name, modifierGroupName, modifier.name)
+                                            ? colors.primary
+                                            : colors.white,
+                                          borderColor: isModifierSelected(item.name, modifierGroupName, modifier.name)
+                                            ? colors.primary
+                                            : colors.gray[300]
+                                        }}>
+                                          {isModifierSelected(item.name, modifierGroupName, modifier.name) && (
+                                            <span style={checkmarkStyles}>✓</span>
+                                          )}
+                                        </div>
+                                        <span style={{
+                                          ...modifierOptionNameStyles,
+                                          textAlign: language === 'ar' ? 'right' : 'left'
+                                        }}>
+                                          {getText(modifier, 'name', language)}
+                                        </span>
+                                        <span style={modifierOptionPriceStyles}>
+                                          +{currency.symbolEn} {modifier.price.toLocaleString(currency.format)}
+                                        </span>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                              ))}
                             </div>
                           )}
 
@@ -926,7 +1128,19 @@ export default function MenuPage() {
                               ...priceStyles,
                               textAlign: language === 'ar' ? 'right' : 'left'
                             }}>
-                              {formatPrice(itemPrice, language)}
+                              {selectedOption && isPriceDifferent ? (
+                                <span>
+                                  <span style={originalPriceStyles}>
+                                    {formatPrice(basePrice, language)}
+                                  </span>
+                                  {' → '}
+                                  <span style={selectedPriceStyles}>
+                                    {formatPrice(itemPrice, language)}
+                                  </span>
+                                </span>
+                              ) : (
+                                formatPrice(itemPrice, language)
+                              )}
                             </p>
 
                             {/* Quantity Selector - Only in order mode */}
@@ -949,7 +1163,7 @@ export default function MenuPage() {
                                 <button
                                   onClick={(e) => {
                                     e.stopPropagation();
-                                    addToCart(item, 1, selectedOption);
+                                    addToCart(item, 1, selectedOption, selectedModifiers);
                                   }}
                                   style={quantityButtonStyles}
                                 >
@@ -964,7 +1178,6 @@ export default function MenuPage() {
                   })}
                 </motion.div>
               ) : (
-                /* No results message for this category (only shown when searching) */
                 features.enableSearch && searchQuery && (
                   <div style={categoryNoResultsStyles}>
                     <p style={{ textAlign: language === 'ar' ? 'right' : 'center' }}>
@@ -1114,6 +1327,40 @@ export default function MenuPage() {
                                 ×
                               </button>
                             </div>
+
+                            {/* Display selected modifiers in cart */}
+                            {item.selectedModifiers && Object.keys(item.selectedModifiers).length > 0 && (
+                              <div style={cartModifiersContainerStyles}>
+                                {Object.entries(item.selectedModifiers).map(([modifierGroupName, selectedMods]) => {
+                                  const modifierGroup = item.modifiers?.[modifierGroupName];
+                                  if (!modifierGroup) return null;
+
+                                  return (
+                                    <div key={modifierGroupName} style={cartModifierGroupStyles}>
+                                      <span style={cartModifierGroupLabelStyles}>
+                                        {getText(modifierGroup, 'name', language)}:
+                                      </span>
+                                      <div style={cartModifierItemsStyles}>
+                                        {selectedMods.map(modifierName => {
+                                          const modifier = modifierGroup.options?.find(opt => opt.name === modifierName);
+                                          return modifier ? (
+                                            <span key={modifierName} style={cartModifierItemStyles}>
+                                              {getText(modifier, 'name', language)}
+                                              {modifier.price > 0 && (
+                                                <span style={cartModifierPriceStyles}>
+                                                  (+{currency.symbolEn} {modifier.price.toLocaleString(currency.format)})
+                                                </span>
+                                              )}
+                                            </span>
+                                          ) : null;
+                                        })}
+                                      </div>
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            )}
+
                             <div style={cartItemDetailsStyles}>
                               <span style={{
                                 ...cartItemPriceStyles,
@@ -1290,7 +1537,7 @@ export default function MenuPage() {
                   animate={animations.enableAnimations ? { y: 0, opacity: 1 } : {}}
                   transition={animations.enableAnimations ? { delay: animations.staggerDelay * 3 } : {}}
                 >
-                  {getItemDisplayName(selectedItem, selectedItemOption, language)}
+                  {getItemDisplayName(selectedItem, selectedItemOption, selectedItemModifiers, language)}
                 </motion.h2>
 
                 {layout.showItemDescription && (
@@ -1307,8 +1554,8 @@ export default function MenuPage() {
                   </motion.p>
                 )}
 
-                {/* Product Options in Modal - Only in order mode */}
-                {isOrderMode && features.enableProductOptions && selectedItem.options && selectedItem.options.length > 0 && (
+                {/* Product Options in Modal */}
+                {features.enableProductOptions && selectedItem.options && selectedItem.options.length > 0 && (
                   <motion.div
                     style={modalOptionsContainerStyles}
                     initial={animations.enableAnimations ? { opacity: 0 } : {}}
@@ -1319,33 +1566,101 @@ export default function MenuPage() {
                       ...modalOptionsLabelStyles,
                       textAlign: language === 'ar' ? 'right' : 'center'
                     }}>
-                      {language === 'en' ? 'Select option:' : 'اختر الخيار:'}
+                      {language === 'en' ? 'Options:' : 'الخيارات:'}
                     </div>
                     <div style={modalOptionsListStyles}>
-                      {selectedItem.options.map((option) => (
-                        <button
-                          key={option.name}
-                          style={{
-                            ...modalOptionButtonStyles,
-                            ...(selectedItemOption?.name === option.name ? selectedModalOptionStyle : {})
-                          }}
-                          onClick={() => {
-                            setSelectedItemOption(option);
-                            handleOptionSelect(selectedItem.name, option);
-                          }}
-                        >
-                          <span style={{
-                            ...modalOptionNameStyles,
-                            textAlign: language === 'ar' ? 'right' : 'left'
-                          }}>
-                            {getText(option, 'name', language)}
-                          </span>
-                          <span style={modalOptionPriceStyles}>
-                            +{currency.symbolEn} {option.price.toLocaleString(currency.format)}
-                          </span>
-                        </button>
-                      ))}
+                      {selectedItem.options.map((option) => {
+                        const basePrice = Array.isArray(selectedItem.price) ? selectedItem.price[0] || 0 : selectedItem.price || 0;
+                        return (
+                          <button
+                            key={option.name}
+                            style={{
+                              ...modalOptionButtonStyles,
+                              ...(selectedItemOption?.name === option.name ? selectedModalOptionStyle : {})
+                            }}
+                            onClick={() => {
+                              setSelectedItemOption(option);
+                              handleOptionSelect(selectedItem.name, option);
+                            }}
+                          >
+                            <span style={{
+                              ...modalOptionNameStyles,
+                              textAlign: language === 'ar' ? 'right' : 'left'
+                            }}>
+                              {getText(option, 'name', language)}
+                            </span>
+                            <span style={modalOptionPriceStyles}>
+                              {option.price !== basePrice && '+'}
+                              {currency.symbolEn} {option.price.toLocaleString(currency.format)}
+                            </span>
+                          </button>
+                        );
+                      })}
                     </div>
+                  </motion.div>
+                )}
+
+                {/* Modifiers in Modal */}
+                {selectedItem.modifiers && Object.keys(selectedItem.modifiers).length > 0 && (
+                  <motion.div
+                    style={modalModifiersContainerStyles}
+                    initial={animations.enableAnimations ? { opacity: 0 } : {}}
+                    animate={animations.enableAnimations ? { opacity: 1 } : {}}
+                    transition={animations.enableAnimations ? { delay: animations.staggerDelay * 5 } : {}}
+                  >
+                    <div style={modalModifiersTitleStyles}>
+                      {language === 'en' ? 'Customize:' : 'تخصيص:'}
+                    </div>
+                    {Object.entries(selectedItem.modifiers).map(([modifierGroupName, modifierGroup]) => (
+                      <div key={modifierGroupName} style={modalModifierGroupStyles}>
+                        <div style={{
+                          ...modalModifierGroupLabelStyles,
+                          textAlign: language === 'ar' ? 'right' : 'left'
+                        }}>
+                          {getText(modifierGroup, 'name', language)}
+                          {modifierGroup.required && (
+                            <span style={modalRequiredBadgeStyles}>
+                              {language === 'en' ? ' (Required)' : ' (مطلوب)'}
+                            </span>
+                          )}
+                          <span style={modalMaxSelectionsStyles}>
+                            {language === 'en' ? ` (Max ${modifierGroup.maxSelections || 1})` : ` (الحد الأقصى ${modifierGroup.maxSelections || 1})`}
+                          </span>
+                        </div>
+                        <div style={modalModifierOptionsListStyles}>
+                          {modifierGroup.options && modifierGroup.options.map((modifier) => (
+                            <div
+                              key={modifier.name}
+                              style={modalModifierOptionContainerStyles}
+                              onClick={() => handleModifierSelect(selectedItem.name, modifierGroupName, modifier)}
+                            >
+                              <div style={{
+                                ...modalModifierCheckboxStyles,
+                                backgroundColor: isModifierSelected(selectedItem.name, modifierGroupName, modifier.name)
+                                  ? colors.primary
+                                  : colors.white,
+                                borderColor: isModifierSelected(selectedItem.name, modifierGroupName, modifier.name)
+                                  ? colors.primary
+                                  : colors.gray[300]
+                              }}>
+                                {isModifierSelected(selectedItem.name, modifierGroupName, modifier.name) && (
+                                  <span style={modalCheckmarkStyles}>✓</span>
+                                )}
+                              </div>
+                              <span style={{
+                                ...modalModifierOptionNameStyles,
+                                textAlign: language === 'ar' ? 'right' : 'left'
+                              }}>
+                                {getText(modifier, 'name', language)}
+                              </span>
+                              <span style={modalModifierOptionPriceStyles}>
+                                +{currency.symbolEn} {modifier.price.toLocaleString(currency.format)}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
                   </motion.div>
                 )}
 
@@ -1356,16 +1671,16 @@ export default function MenuPage() {
                   }}
                   initial={animations.enableAnimations ? { scale: 0.8, opacity: 0 } : {}}
                   animate={animations.enableAnimations ? { scale: 1, opacity: 1 } : {}}
-                  transition={animations.enableAnimations ? { delay: animations.staggerDelay * 5 } : {}}
+                  transition={animations.enableAnimations ? { delay: animations.staggerDelay * 6 } : {}}
                 >
-                  {formatPrice(getItemPrice(selectedItem, selectedItemOption), language)}
+                  {formatPrice(getItemPrice(selectedItem, selectedItemOption, selectedItemModifiers), language)}
                 </motion.p>
 
                 {/* Add to Cart button - Only in order mode */}
                 {isOrderMode && features.enableCart && (
                   <motion.button
                     onClick={() => {
-                      addToCart(selectedItem, 1, selectedItemOption);
+                      addToCart(selectedItem, 1, selectedItemOption, selectedItemModifiers);
                       setIsItemModalOpen(false);
                     }}
                     style={addToCartButtonStyles}
@@ -1564,9 +1879,10 @@ const optionBadgeStyles = {
   fontWeight: '600',
   padding: '0.2rem 0.5rem',
   borderRadius: '4px',
-  backgroundColor: BRAND_CONFIG.colors.primary + '20',
+  backgroundColor: BRAND_CONFIG.colors.primary,
   color: BRAND_CONFIG.colors.contrast,
   marginLeft: '0.5rem',
+  marginRight: '0.5rem',
   verticalAlign: 'middle'
 };
 
@@ -1582,7 +1898,7 @@ const optionsContainerStyles = {
 const optionsLabelStyles = {
   fontSize: '0.8rem',
   fontWeight: '600',
-  color: BRAND_CONFIG.colors.gray[700],
+  color: BRAND_CONFIG.colors.black,
   marginBottom: '0.5rem',
   textAlign: 'left'
 };
@@ -1612,23 +1928,174 @@ const optionButtonStyles = {
 const selectedOptionStyle = {
   backgroundColor: BRAND_CONFIG.colors.primary + '20',
   border: `1px solid ${BRAND_CONFIG.colors.primary}`,
-  color: BRAND_CONFIG.colors.contrast,
+  color: BRAND_CONFIG.colors.black,
   fontWeight: '600'
 };
 
 const optionPriceStyles = {
   fontSize: '0.8rem',
   fontWeight: '600',
-  color: BRAND_CONFIG.colors.secondary
+  color: BRAND_CONFIG.colors.black
 };
 
-// Cart Item Option
+// Modifiers Styles
+const modifiersContainerStyles = {
+  marginBottom: '1rem',
+  padding: '0.75rem',
+  backgroundColor: BRAND_CONFIG.colors.gray[50],
+  borderRadius: '8px',
+  border: `1px solid ${BRAND_CONFIG.colors.gray[200]}`
+};
+
+const modifierGroupStyles = {
+  marginBottom: '0.75rem',
+  paddingBottom: '0.75rem',
+  borderBottom: `1px solid ${BRAND_CONFIG.colors.gray[200]}`,
+  ':last-child': {
+    marginBottom: 0,
+    paddingBottom: 0,
+    borderBottom: 'none'
+  }
+};
+
+const modifierGroupLabelStyles = {
+  fontSize: '0.8rem',
+  fontWeight: '600',
+  color: BRAND_CONFIG.colors.black,
+  marginBottom: '0.5rem',
+  textAlign: 'left',
+  display: 'flex',
+  alignItems: 'center',
+  gap: '0.25rem'
+};
+
+const requiredBadgeStyles = {
+  fontSize: '0.7rem',
+  color: BRAND_CONFIG.colors.primary,
+  fontWeight: '500'
+};
+
+const modifierMaxSelectionsStyles = {
+  fontSize: '0.7rem',
+  color: BRAND_CONFIG.colors.gray[500],
+  fontWeight: '500'
+};
+
+const modifierOptionsListStyles = {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '0.5rem'
+};
+
+const modifierOptionContainerStyles = {
+  display: 'flex',
+  alignItems: 'center',
+  gap: '0.5rem',
+  padding: '0.5rem',
+  borderRadius: '6px',
+  cursor: 'pointer',
+  transition: 'all 0.2s ease',
+  ':hover': {
+    backgroundColor: BRAND_CONFIG.colors.gray[100]
+  }
+};
+
+const modifierCheckboxStyles = {
+  width: '18px',
+  height: '18px',
+  borderRadius: '4px',
+  border: `2px solid ${BRAND_CONFIG.colors.gray[300]}`,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  flexShrink: 0,
+  transition: 'all 0.2s ease'
+};
+
+const checkmarkStyles = {
+  color: BRAND_CONFIG.colors.white,
+  fontSize: '0.7rem',
+  fontWeight: 'bold'
+};
+
+const modifierOptionNameStyles = {
+  fontSize: '0.8rem',
+  fontWeight: '500',
+  color: BRAND_CONFIG.colors.gray[800],
+  flex: 1,
+  textAlign: 'left'
+};
+
+const modifierOptionPriceStyles = {
+  fontSize: '0.75rem',
+  fontWeight: '600',
+  color: BRAND_CONFIG.colors.black
+};
+
+// Price Comparison Styles
+const originalPriceStyles = {
+  textDecoration: 'line-through',
+  color: BRAND_CONFIG.colors.gray[500],
+  fontSize: '0.9rem',
+  marginRight: '0.25rem'
+};
+
+const selectedPriceStyles = {
+  color: BRAND_CONFIG.colors.secondary,
+  fontWeight: 'bold',
+  fontSize: '1rem'
+};
+
+// Cart Item Styles
 const cartItemOptionStyles = {
   display: 'block',
   fontSize: '0.8rem',
   fontWeight: '500',
   color: BRAND_CONFIG.colors.gray[600],
   marginTop: '0.25rem'
+};
+
+const cartModifiersContainerStyles = {
+  marginBottom: '0.75rem',
+  padding: '0.5rem',
+  backgroundColor: BRAND_CONFIG.colors.gray[100],
+  borderRadius: '6px'
+};
+
+const cartModifierGroupStyles = {
+  marginBottom: '0.25rem',
+  ':last-child': {
+    marginBottom: 0
+  }
+};
+
+const cartModifierGroupLabelStyles = {
+  fontSize: '0.75rem',
+  fontWeight: '600',
+  color: BRAND_CONFIG.colors.gray[700],
+  display: 'block',
+  marginBottom: '0.125rem'
+};
+
+const cartModifierItemsStyles = {
+  display: 'flex',
+  flexWrap: 'wrap',
+  gap: '0.25rem'
+};
+
+const cartModifierItemStyles = {
+  fontSize: '0.7rem',
+  color: BRAND_CONFIG.colors.gray[600],
+  backgroundColor: BRAND_CONFIG.colors.white,
+  padding: '0.125rem 0.375rem',
+  borderRadius: '4px',
+  border: `1px solid ${BRAND_CONFIG.colors.gray[200]}`
+};
+
+const cartModifierPriceStyles = {
+  fontSize: '0.65rem',
+  color: BRAND_CONFIG.colors.primary,
+  marginLeft: '0.125rem'
 };
 
 // Modal Options
@@ -1672,7 +2139,7 @@ const modalOptionButtonStyles = {
 const selectedModalOptionStyle = {
   backgroundColor: BRAND_CONFIG.colors.primary + '20',
   border: `2px solid ${BRAND_CONFIG.colors.primary}`,
-  color: BRAND_CONFIG.colors.contrast,
+  color: BRAND_CONFIG.colors.black,
   fontWeight: '600'
 };
 
@@ -1683,7 +2150,110 @@ const modalOptionNameStyles = {
 const modalOptionPriceStyles = {
   fontSize: '0.85rem',
   fontWeight: '600',
-  color: BRAND_CONFIG.colors.secondary
+  color: BRAND_CONFIG.colors.black
+};
+
+// Modal Modifiers Styles
+const modalModifiersContainerStyles = {
+  marginBottom: '1.5rem',
+  padding: '1rem',
+  backgroundColor: BRAND_CONFIG.colors.gray[50],
+  borderRadius: '12px',
+  border: `1px solid ${BRAND_CONFIG.colors.gray[200]}`
+};
+
+const modalModifiersTitleStyles = {
+  fontSize: '0.9rem',
+  fontWeight: '600',
+  color: BRAND_CONFIG.colors.gray[700],
+  marginBottom: '1rem',
+  textAlign: 'center'
+};
+
+const modalModifierGroupStyles = {
+  marginBottom: '1rem',
+  paddingBottom: '1rem',
+  borderBottom: `1px solid ${BRAND_CONFIG.colors.gray[200]}`,
+  ':last-child': {
+    marginBottom: 0,
+    paddingBottom: 0,
+    borderBottom: 'none'
+  }
+};
+
+const modalModifierGroupLabelStyles = {
+  fontSize: '0.85rem',
+  fontWeight: '600',
+  color: BRAND_CONFIG.colors.black,
+  marginBottom: '0.75rem',
+  textAlign: 'left',
+  display: 'flex',
+  alignItems: 'center',
+  gap: '0.25rem'
+};
+
+const modalRequiredBadgeStyles = {
+  fontSize: '0.75rem',
+  color: BRAND_CONFIG.colors.primary,
+  fontWeight: '500'
+};
+
+const modalMaxSelectionsStyles = {
+  fontSize: '0.75rem',
+  color: BRAND_CONFIG.colors.gray[500],
+  fontWeight: '500'
+};
+
+const modalModifierOptionsListStyles = {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '0.5rem'
+};
+
+const modalModifierOptionContainerStyles = {
+  display: 'flex',
+  alignItems: 'center',
+  gap: '0.75rem',
+  padding: '0.75rem',
+  borderRadius: '8px',
+  cursor: 'pointer',
+  transition: 'all 0.2s ease',
+  backgroundColor: BRAND_CONFIG.colors.white,
+  ':hover': {
+    backgroundColor: BRAND_CONFIG.colors.gray[100]
+  }
+};
+
+const modalModifierCheckboxStyles = {
+  width: '20px',
+  height: '20px',
+  borderRadius: '5px',
+  border: `2px solid ${BRAND_CONFIG.colors.gray[300]}`,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  flexShrink: 0,
+  transition: 'all 0.2s ease'
+};
+
+const modalCheckmarkStyles = {
+  color: BRAND_CONFIG.colors.white,
+  fontSize: '0.8rem',
+  fontWeight: 'bold'
+};
+
+const modalModifierOptionNameStyles = {
+  fontSize: '0.9rem',
+  fontWeight: '500',
+  color: BRAND_CONFIG.colors.gray[800],
+  flex: 1,
+  textAlign: 'left'
+};
+
+const modalModifierOptionPriceStyles = {
+  fontSize: '0.85rem',
+  fontWeight: '600',
+  color: BRAND_CONFIG.colors.black
 };
 
 // Modal Styles
