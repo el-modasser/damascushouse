@@ -45,7 +45,7 @@
         "name_ar": "فلافل (6 قطع)",
         "description": "Crispy chickpeas patties with herbs and spices, served with fresh veggies and tahini.",
         "description_ar": "أقراص حمص مقرمشة مع أعشاب وتوابل، تقدم مع خضروات طازجة وطحينة.",
-        "price": 650,
+        "price": 600,
         "options": [],
         "image": ""
       },
@@ -63,7 +63,7 @@
         "name_ar": "متبل",
         "description": "Roasted eggplants, garlic, lemon juice, tahini and herbs, spices and yoghurt.",
         "description_ar": "باذنجان مشوي، ثوم، عصير ليمون، طحينة وأعشاب، توابل ولبن.",
-        "price": 750,
+        "price": 650,
         "options": [],
         "image": ""
       },
@@ -72,7 +72,7 @@
         "name_ar": "ورق عنب (6 قطع)",
         "description": "Tender grapevine leaves wrapped around a savoury filling of rice, herbs, vegetables and olive oil.",
         "description_ar": "أوراق عنب طرية ملفوفة حول حشوة لذيذة من الأرز، الأعشاب، الخضروات وزيت الزيتون.",
-        "price": 700,
+        "price": 650,
         "options": [],
         "image": ""
       }
@@ -140,7 +140,7 @@
       {
         "name": "Safiha Tomato",
         "name_ar": "صفيحة طماطم",
-        "description": "Middle Eastern dough, topped with spicy, savoury and finely diced tomatoes and onions.",
+        "description": "Middle Eastern dough, topped with spicy, savoury ground meat mixture with finely diced tomatoes and onions.",
         "description_ar": "عجينة شرق أوسطية، مغطاة بطماطم وبصل مفرومين ناعماً وحار ولذيذ.",
         "price": 400,
         "options": [],
@@ -490,7 +490,7 @@
           {
             "name": "Large",
             "name_ar": "كبير",
-            "price": 1200
+            "price": 1100
           }
         ],
         "image": ""
